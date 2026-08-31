@@ -81,15 +81,32 @@
 a:focus-visible, button:focus-visible, [role="tab"]:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,174,0,.25);outline:none}
 
-/* Sticky header — fixed pill that becomes solid after scroll for readability */
-.site-header--sticky{position:fixed!important;left:50%!important;transform:translateX(-50%)!important;z-index:50;top:16px!important;backdrop-filter:saturate(1.2) blur(8px)}
-.site-header.site-header--overlay.site-header--sticky{background:rgba(255,255,255,.18)!important;color:#fff;box-shadow:none}
+/* Sticky header — pill that stays at top without covering content */
+.site-header--sticky{position:fixed!important;left:50%!important;transform:translateX(-50%)!important;z-index:50;top:16px!important;backdrop-filter:saturate(1.2) blur(8px);will-change:transform}
+.site-header.site-header--overlay.site-header--sticky{background:rgba(255,255,255,.92)!important;color:var(--ink)!important;box-shadow:0 8px 32px rgba(0,0,0,.10)}
+.site-header.site-header--overlay.site-header--sticky .nav a,
+.site-header.site-header--overlay.site-header--sticky .nav a:link,
+.site-header.site-header--overlay.site-header--sticky .nav a:visited{color:var(--ink)!important}
+.site-header.site-header--overlay.site-header--sticky .nav a:hover{color:var(--ink)!important;opacity:.62}
 .site-header.site-header--sticky:not(.site-header--overlay){background:rgba(255,255,255,.98);box-shadow:0 8px 32px rgba(0,0,0,.12)}
+/* Ensure logo stays dark on light pill — force no inversion */
+.site-header--sticky .brand-wordmark{filter:none!important;opacity:1!important}
 @media (max-width:768px){.site-header--sticky{top:12px!important}}
 @media (max-width:900px){.site-header--sticky{top:12px!important}}
 
-/* Keep inner-page header also sticky */
+/* Keep inner-page header also sticky but not absolute */
 .inner-page .site-header--sticky{position:fixed!important}
+
+/* Prevent fixed header from covering anchor targets */
+html{scroll-padding-top:140px}
+#about, #services, #process, #team{scroll-margin-top:140px}
+/* Add top offset for main so hero not hidden under fixed header on load */
+.hero{padding-top:0}
+.hero-content{padding-top:calc(529px + 24px)}
+
+/* Inner pages: offset for fixed header */
+.inner-page{padding-top:40px}
+.inner-page .pricing-page, .inner-page.schedule-page, .inner-page.contact-page{padding-top:220px}
 
 /* Package banner on schedule */
 .package-banner{margin:18px 0 22px;padding:14px 18px;border-radius:14px;background:#fff8dc;border:1px solid #ffeaa0;color:#5c4a00;font-size:15px;line-height:1.4}
@@ -116,6 +133,42 @@ a:focus-visible, button:focus-visible, [role="tab"]:focus-visible, input:focus-v
 
 /* Footer / ghost polish */
 .footer .ghost{opacity:.08!important}
+
+/* === Zoom fix: site appears at 150% — scale back to 100% === */
+@media (min-width: 901px){
+  /* Fluid clamp below handles 150%->100% by capping large Figma sizes; no global zoom to avoid double-shrink */
+  html{zoom:1}
+  @supports not (zoom:1){
+    body{transform:none;width:auto}
+  }
+  /* Reduce giant Figma titles to fit 100% viewport */
+  .section-title{font-size:clamp(48px, 5.6vw, 84px)!important;line-height:1.08!important}
+  .hero h1{font-size:clamp(44px, 5vw, 64px)!important;max-width:780px!important;width:auto!important}
+  .hero p{font-size:clamp(18px, 2vw, 28px)!important}
+  .section-copy{font-size:clamp(18px, 2vw, 26px)!important}
+  .cta h2{font-size:clamp(48px, 6vw, 84px)!important}
+  .cta-subtitle{font-size:clamp(18px, 2.2vw, 32px)!important}
+  /* Prevent fixed 441/700px cards from overflowing at scaled width */
+  .services .content{width:min(1444px, 92%)!important;max-width:1444px!important}
+  .service-grid{grid-template-columns:repeat(2, minmax(0,1fr))!important;column-gap:clamp(20px, 2.5vw, 44px)!important}
+  .service-card{width:auto!important;min-width:0!important}
+  .service-card h3{font-size:clamp(24px, 2.2vw, 32px)!important}
+  .service-card p{font-size:clamp(15px, 1.4vw, 18px)!important}
+  #process .content{width:min(1375px, 92%)!important}
+  #process .process-grid{grid-template-columns:repeat(3, minmax(0,1fr))!important;gap:clamp(16px, 1.8vw, 26px)!important}
+  .process-card{width:auto!important;min-width:0!important;height:auto!important;min-height:260px!important;padding:40px 28px!important}
+  .process-card h3{font-size:clamp(36px, 3.5vw, 48px)!important;position:static!important;transform:none!important;text-align:center}
+  .process-card p{font-size:clamp(14px, 1.3vw, 18px)!important;position:static!important;width:auto!important;margin-top:10px!important}
+  .process-scale{width:auto!important;grid-column:1/span 3!important}
+  .process-scale h3{font-size:clamp(56px, 5vw, 84px)!important}
+  .process-scale p{font-size:clamp(18px, 1.8vw, 26px)!important}
+  /* Team grid fluid to avoid cut-off at right */
+  .team-grid{width:min(1480px, 96%)!important;margin-left:auto!important;margin-right:auto!important;column-gap:clamp(40px, 5vw, 80px)!important}
+  .team-member{width:auto!important}
+  /* Why grid already fluid but ensure not absolute overflow */
+  .why-card h3{font-size:clamp(22px, 2vw, 30px)!important}
+  .why-card p{font-size:clamp(14px, 1.3vw, 18px)!important}
+}
 
 /* Contrast fixes — gold buttons with ink text for AA on white */
 .schedule-submit{background:var(--gold)!important;color:var(--ink)!important;border:2px solid transparent}
