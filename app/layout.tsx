@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./precision.css";
+import "./ui-fixes.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
