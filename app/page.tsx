@@ -3,16 +3,17 @@ import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import FaqList from "@/components/FaqList";
 
-const heroBg = "https://www.figma.com/api/mcp/asset/72fb9b36-08eb-44c7-bf21-b99697247c9e.png";
-const cta = "https://www.figma.com/api/mcp/asset/53515314-cf7a-4f6e-877d-c28e64153217.png";
-const whyImageA = "https://www.figma.com/api/mcp/asset/1dbf97d4-92db-4d12-843b-33dc4dbb6baf.png";
-const whyImageB = "https://www.figma.com/api/mcp/asset/17fd01f7-3b8a-4676-83d8-4f997f3c8f17.png";
-const iconBadge = "https://www.figma.com/api/mcp/asset/8916cb97-cfc3-44a7-a0a5-f379d6d3b2e8.svg";
-const iconFilm = "https://www.figma.com/api/mcp/asset/2e8229a0-4145-45d3-a93c-600411eb3d04.svg";
-const iconMarketing = "https://www.figma.com/api/mcp/asset/70ae261b-e7d1-4a89-aa62-eaa28c87c7b8.svg";
-const iconWeb = "https://www.figma.com/api/mcp/asset/85a8d5f7-3b48-4ddd-a972-541c9f1d2698.svg";
-const iconAi = "https://www.figma.com/api/mcp/asset/8aa2d47e-d682-4fe2-8428-d6506d167245.svg";
-const processDot = "https://www.figma.com/api/mcp/asset/8911b9f8-c912-493c-b92e-59ba307ab83c.svg";
+// These are the current Figma-exported assets referenced by the design frames.
+const heroBg = "https://www.figma.com/api/mcp/asset/eabb916d-d76e-4bf8-acfb-caf7c5fe115c.png";
+const cta = "https://www.figma.com/api/mcp/asset/85b414a2-9786-4234-8ff0-e6f279edb9d8.png";
+const whyImageA = "https://www.figma.com/api/mcp/asset/1ee4af42-5f98-4768-90cd-77d66d0d9d75.png";
+const whyImageB = "https://www.figma.com/api/mcp/asset/58b8423b-974e-4b16-b17c-6caa5770d5c5.png";
+const iconBadge = "https://www.figma.com/api/mcp/asset/439fc6bf-200f-4521-90d6-2f87fe01ed10.png";
+const iconFilm = "https://www.figma.com/api/mcp/asset/28e468e2-54c5-4fee-91b0-9fd62d0e3877.svg";
+const iconMarketing = "https://www.figma.com/api/mcp/asset/3a50cbd5-ce9a-4890-b821-0664dc4fc217.svg";
+const iconWeb = "https://www.figma.com/api/mcp/asset/9f742fc8-9cd3-4233-8981-24026f576252.svg";
+const iconAi = "https://www.figma.com/api/mcp/asset/ea32e200-637c-46cf-877e-1a6c93bc0691.svg";
+const processDot = "https://www.figma.com/api/mcp/asset/3c0c359a-829d-4840-920f-140adee139b8.svg";
 
 const services = [
   ["Media & Content Production", "Professional video editing, graphic design, content creation, and social media management.", true, iconFilm],
@@ -31,22 +32,22 @@ const why = [
 const team = [
   [
     "CEO — Kingdavid",
-    "https://www.figma.com/api/mcp/asset/fb5359b6-f782-4998-8424-955a6d4afe73.png",
+    "https://www.figma.com/api/mcp/asset/d9f78600-fec6-44d2-bf77-0728bfa35ab1.png",
     "“At Elroi Hub, we combine creativity, technology, and AI to help businesses grow, operate smarter, and achieve measurable results. Our goal is simple: build solutions that create real value and lasting impact.”",
   ],
   [
     "COO - Lenny Preye",
-    "https://www.figma.com/api/mcp/asset/0a2ec82a-d40a-413f-89bb-00d8d6c1ac16.png",
+    "https://www.figma.com/api/mcp/asset/681bd80c-24d0-4ea4-8471-f26ea79a5f43.png",
     "At Elroi Hub, I focus on turning vision into consistent execution aligning our teams, systems, and AI powered processes so every project delivers measurable growth and lasting results for our clients.",
   ],
   [
     "CMO - Favour Owens",
-    "https://www.figma.com/api/mcp/asset/e0c2efa9-8c84-40c7-b378-12f7c2fb083f.png",
+    "https://www.figma.com/api/mcp/asset/b774425f-7a57-46c6-8897-0d7efe4676b8.png",
     "“Brand identity goes far beyond consistency. It is the strategic process of building a distinct presence, creating meaningful connections, and sustaining a brand through purpose, dedication, and commitment. At Elroi Hub, we are committed to transforming ideas into impactful brands through strategic planning, creativity, and collaboration.”",
   ],
   [
-    "Okorosa Asemebo Goodness - AI Research Lead",
-    "https://www.figma.com/api/mcp/asset/621e220d-e002-4ae5-9d99-4e035a826142.png",
+    "Okorosa Asemebo Goodness - AI Research Lead.",
+    "https://www.figma.com/api/mcp/asset/24aec887-7a2e-480f-bc2c-a680aa378d5e.png",
     "“The future of AI will not belong to those who merely have access to powerful tools, but to those who understand how to think with them, direct them, and turn intelligence into execution. PromptForge AI is where that transformation begins.”",
   ],
 ] as const;
@@ -64,8 +65,8 @@ export default function Home() {
       <header id="home"><SiteHeader /></header>
       <main>
         <section className="hero">
-          <div className="hero-bg" style={{ backgroundImage: `linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.02) 64%,rgba(0,0,0,.13)),url('${heroBg}')` }} />
-          <div className="hero-overlay" />
+          <div className="hero-bg" style={{ backgroundImage: `url('${heroBg}')` }} />
+          <div className="hero-overlay" aria-hidden="true" />
           <div className="hero-content">
             <h1>Built for Brands That Refuse to <span className="gold">Blend</span> In.</h1>
             <p>Creative. Strategic. Built to dominate.</p>
@@ -152,11 +153,9 @@ export default function Home() {
           <div className="team-grid">
             {team.map(([name, img, quote]) => (
               <article className="team-member" key={name}>
-                <img className="avatar" src={img} alt={name} />
-                <div>
-                  <p className="quote">{quote}</p>
-                  <p className="member-name">{name}</p>
-                </div>
+                <img className="avatar" src={img} alt="" />
+                <p className="quote">{quote}</p>
+                <p className="member-name">{name}</p>
               </article>
             ))}
           </div>
