@@ -19,8 +19,9 @@
   padding:14px 33px 14px 71px;
   overflow:hidden;
 }
-.site-header .brand{width:128px;height:76px;flex:0 0 128px;position:relative}
-.site-header .brand img{display:block;width:100%;height:100%;object-fit:contain}
+.site-header .brand{width:128px;height:76px;flex:0 0 128px;position:relative;display:block}
+.site-header .brand-mark{position:absolute;left:0;top:0;width:40.138px;height:74.588px;object-fit:cover}
+.site-header .brand-wordmark{position:absolute;left:40.138px;top:2.21px;width:87.862px;height:73.64px;object-fit:contain}
 .site-header .nav{
   width:653px;
   flex:0 0 653px;
@@ -274,7 +275,9 @@
 @media (max-width:1400px) and (min-width:901px){
   .site-header{width:calc(100vw - 48px);padding-left:44px;padding-right:24px}
   .site-header .brand{width:100px;flex-basis:100px}
-  .site-header .brand img{width:100px;height:64px}
+  .site-header .brand-mark{width:31.36px;height:58.27px}
+  .site-header .brand-wordmark{left:31.36px;top:1.7px;width:68.65px;height:57.63px}
+  .site-header .brand img{object-fit:contain}
   .site-header .nav{width:auto;flex:1;margin-left:34px;gap:16px;font-size:20px;justify-content:center}
   .site-header .nav a{width:auto!important}
   .site-header .header-cta{width:180px;flex-basis:180px;height:56px;font-size:20px}
@@ -303,7 +306,8 @@
 @media (max-width:900px){
   .site-header{top:20px;left:50%;width:calc(100vw - 32px);max-width:none;height:64px;padding:8px 12px 8px 18px;border-radius:34px}
   .site-header .brand{width:92px;height:48px;flex-basis:92px}
-  .site-header .brand img{width:92px;height:48px}
+  .site-header .brand-mark{width:28.85px;height:47px}
+  .site-header .brand-wordmark{left:28.85px;top:1.4px;width:63.15px;height:46.6px}
   .site-header .nav{display:none}
   .site-header .header-cta{width:auto;min-width:120px;flex:0 0 auto;height:44px;padding:0 16px;border-radius:20px;font-size:14px}
   .mobile-menu-button{display:flex!important;margin-left:10px;width:42px;height:42px;border:0;border-radius:50%;background:var(--green);align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;padding:0}
