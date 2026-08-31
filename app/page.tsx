@@ -148,14 +148,16 @@ export default function Home() {
           <div className="ghost">OUR TEAM</div>
           <div className="team-title">
             <div className="section-kicker">Meet the Team</div>
-            <h2 className="section-title" style={{ lineHeight: 1 }}>The <span className="gold">People</span> Behind the <span className="gold">Growth.</span></h2>
+            <h2 className="section-title">The <span className="gold">People</span> Behind the <span className="gold">Growth.</span></h2>
           </div>
           <div className="team-grid">
             {team.map(([name, img, quote]) => (
               <article className="team-member" key={name}>
                 <img className="avatar" src={img} alt="" />
-                <p className="quote">{quote}</p>
-                <p className="member-name">{name}</p>
+                <div className="team-member-copy">
+                  <p className="quote">{quote}</p>
+                  <p className="member-name">{name}</p>
+                </div>
               </article>
             ))}
           </div>
