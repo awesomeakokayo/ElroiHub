@@ -9,9 +9,24 @@ export default function Footer() {
       <div className="ghost">El Roi</div>
       <div className="footer-grid">
         <div className="footer-brand">
-          <div className="footer-logo" aria-label="Elroi Hub">
-            <img className="footer-logo-mark" src={logoMark} alt="" aria-hidden="true" />
-            <img className="footer-logo-wordmark" src={logoWordmark} alt="Elroi Hub" />
+          <div
+            className="footer-logo"
+            aria-label="Elroi Hub"
+            style={{ position: "relative", width: 240, height: 142 }}
+          >
+            <img
+              className="footer-logo-mark"
+              src={logoMark}
+              alt=""
+              aria-hidden="true"
+              style={{ position: "absolute", left: 0, top: 0, width: 75.156, height: 139.66, objectFit: "cover" }}
+            />
+            <img
+              className="footer-logo-wordmark"
+              src={logoWordmark}
+              alt="Elroi Hub"
+              style={{ position: "absolute", left: 75.156, top: 4.14, width: 164.514, height: 137.884, objectFit: "contain" }}
+            />
           </div>
           <p>Creative Excellence. Strategic Growth. Lasting Influence.</p>
           <p className="footer-copy">Privacy Policy | © 2026 Elroi Hub</p>
