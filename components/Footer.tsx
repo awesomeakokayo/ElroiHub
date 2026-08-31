@@ -12,20 +12,20 @@ export default function Footer() {
           <div
             className="footer-logo"
             aria-label="Elroi Hub"
-            style={{ position: "relative", width: 240, height: 142 }}
+            style={{ position: "relative", width: "clamp(170px, 13.8889vw, 240px)", aspectRatio: "240 / 142" }}
           >
             <img
               className="footer-logo-mark"
               src={logoMark}
               alt=""
               aria-hidden="true"
-              style={{ position: "absolute", left: 0, top: 0, width: 75.156, height: 139.66, objectFit: "cover" }}
+              style={{ position: "absolute", left: 0, top: 0, width: "31.315%", height: "98.35%", objectFit: "cover" }}
             />
             <img
               className="footer-logo-wordmark"
               src={logoWordmark}
               alt="Elroi Hub"
-              style={{ position: "absolute", left: 75.156, top: 4.14, width: 164.514, height: 137.884, objectFit: "contain" }}
+              style={{ position: "absolute", left: "31.315%", top: "2.92%", width: "68.52%", height: "97.1%", objectFit: "contain" }}
             />
           </div>
           <p>Creative Excellence. Strategic Growth. Lasting Influence.</p>
