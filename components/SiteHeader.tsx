@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
-const logoMark = "https://www.figma.com/api/mcp/asset/69692345-589e-49e1-82b7-f6d363c27f96.png";
-const logoWordmark = "https://www.figma.com/api/mcp/asset/78efe904-1e46-4d09-aece-823f04a443ec.png";
+const logoMark = "https://www.figma.com/api/mcp/asset/d9ee00d7-ae74-4bd0-80d3-4bcc688e5dc6.png";
+const logoWordmark = "https://www.figma.com/api/mcp/asset/e303a137-4bce-4592-96a5-bf26fab82ef4.png";
 
 const links = [
   ["Home", "/#home"],
@@ -26,10 +26,48 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
     <>
       <header className={`site-header${overlay ? " site-header--overlay" : ""}`}>
         <Link href="/" className="brand" aria-label="Elroi Hub home" onClick={() => setOpen(false)}>
-          <img className="brand-mark" src={logoMark} alt="" aria-hidden="true" />
-          <img className="brand-wordmark" src={logoWordmark} alt="Elroi Hub" />
+          <span
+            className="brand-mark-wrap"
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "31.3578%",
+              aspectRatio: "40.138 / 74.588",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              className="brand-mark"
+              src={logoMark}
+              alt=""
+              style={{
+                position: "absolute",
+                left: "-47.71%",
+                top: "-107.99%",
+                width: "361.12%",
+                height: "291.37%",
+                maxWidth: "none",
+                objectFit: "fill",
+              }}
+            />
+          </span>
+          <img
+            className="brand-wordmark"
+            src={logoWordmark}
+            alt="Elroi Hub"
+            style={{
+              position: "absolute",
+              left: "31.3578%",
+              top: "2.9079%",
+              width: "68.6422%",
+              height: "96.895%",
+              objectFit: "fill",
+            }}
+          />
         </Link>
-        <nav className="nav" aria-label="Primary navigation">
+        <nav className="nav" aria-label="Primary navigation" style={{ lineHeight: "normal" }}>
           {links.map(([label, href]) => (
             <Link key={label} href={href} onClick={() => setOpen(false)}>
               {label}
