@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -20,7 +20,7 @@ export default function ContactForm() {
   return (
     <form className="contact-form" onSubmit={submit}>
       <h2 className="panel-title">Send us a Message</h2>
-      <div className="form-shell" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+      <div className="form-shell">
         <label className="field"><span>Full Name *</span><input name="name" required placeholder="Adaeze Okonkwo" /></label>
         <label className="field"><span>Email Address *</span><input type="email" name="email" required placeholder="adaeze@brand.com" /></label>
         <label className="field"><span>Phone Number</span><input name="phone" placeholder="+234 801 234 5678" /></label>
