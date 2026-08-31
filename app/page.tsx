@@ -3,16 +3,16 @@ import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import FaqList from "@/components/FaqList";
 
-// These are the current Figma-exported assets referenced by the design frames.
-const heroBg = "https://www.figma.com/api/mcp/asset/eabb916d-d76e-4bf8-acfb-caf7c5fe115c.png";
+// Figma-exported assets used by the landing page.
+const heroBg = "https://www.figma.com/api/mcp/asset/fd3e254e-d300-40c8-ab6a-e9a061b9de12.png";
 const cta = "https://www.figma.com/api/mcp/asset/85b414a2-9786-4234-8ff0-e6f279edb9d8.png";
 const whyImageA = "https://www.figma.com/api/mcp/asset/1ee4af42-5f98-4768-90cd-77d66d0d9d75.png";
 const whyImageB = "https://www.figma.com/api/mcp/asset/58b8423b-974e-4b16-b17c-6caa5770d5c5.png";
-const iconBadge = "https://www.figma.com/api/mcp/asset/dc8d7683-a42a-4fd2-9d51-006c046d0591.svg";
-const iconFilm = "https://www.figma.com/api/mcp/asset/3a50cbd5-ce9a-4890-b821-0664dc4fc217.svg";
-const iconMarketing = "https://www.figma.com/api/mcp/asset/9f742fc8-9cd3-4233-8981-24026f576252.svg";
-const iconWeb = "https://www.figma.com/api/mcp/asset/ea32e200-637c-46cf-877e-1a6c93bc0691.svg";
-const iconAi = "https://www.figma.com/api/mcp/asset/300236da-e92c-4472-a962-12ebd58b7399.svg";
+const iconBadge = "https://www.figma.com/api/mcp/asset/dd3238bb-ff95-4857-b58e-0bb20dab5b66.svg";
+const iconFilm = "https://www.figma.com/api/mcp/asset/7398d77e-f71a-4d12-9c6f-8f7e82c0da42.svg";
+const iconMarketing = "https://www.figma.com/api/mcp/asset/5defbb61-f7ba-4be3-90ab-a176940d3344.svg";
+const iconWeb = "https://www.figma.com/api/mcp/asset/9a82ef04-3efe-4651-826a-e09a5e474aa4.svg";
+const iconAi = "https://www.figma.com/api/mcp/asset/9fac8c58-633c-4761-a5d0-4fd10804c715.svg";
 const processDot = "https://www.figma.com/api/mcp/asset/3c0c359a-829d-4840-920f-140adee139b8.svg";
 
 const services = [
