@@ -192,7 +192,17 @@
 .process-strategize p{left:53px;top:146px}
 .process-execute h3{left:101px;top:72px;color:var(--gold)}
 .process-execute p{left:53px;top:143px}
+.process-discover .process-dot-bl{bottom:21px}
+.process-discover .process-dot-br{bottom:21px}
+.process-strategize .process-dot-bl{bottom:30px}
+.process-strategize .process-dot-br{bottom:21px}
+.process-execute .process-dot-bl{bottom:30px}
+.process-execute .process-dot-br{bottom:21px}
 .process-scale{grid-column:1/span 3;width:1375px;background:#246129;color:#fff;display:grid;grid-template-columns:390px 1fr;align-items:center;gap:15px;padding:50px 124px!important}
+.process-scale .process-dot-tl{left:19px;top:26px}
+.process-scale .process-dot-tr{right:19px;top:26px}
+.process-scale .process-dot-bl{left:19px;bottom:21px}
+.process-scale .process-dot-br{right:19px;bottom:30px}
 .process-scale h3{position:static;color:var(--lime);font-size:128px;line-height:1;letter-spacing:-2.56px}
 .process-scale p{position:static;width:auto;max-width:680px;margin:0;font-size:48px;line-height:1.3;text-align:left}
 
@@ -205,8 +215,8 @@
   position:relative;
   z-index:2;
   margin-top:132px;
-  margin-left:-73px;
-  width:1420px;
+  margin-left:-54px;
+  width:1622px;
   display:grid;
   grid-template-columns:710px 710px;
   column-gap:202px;
@@ -234,10 +244,10 @@
 .faq .content{width:1470px;max-width:none}
 .faq .faq-title{max-width:1271px;line-height:1.1}
 .faq-list{margin-top:42px;display:grid;gap:29px}
-.faq-button{width:100%;min-height:126px;height:126px;padding:30px 91px;display:flex;align-items:center;justify-content:space-between;gap:24px;border:0;background:#fff;color:var(--ink);text-align:left;cursor:pointer;font-size:36px;line-height:1.3;letter-spacing:-0.72px}
+.faq-button{width:100%;min-height:126px;height:126px;padding:30px 221px 30px 91px;display:flex;align-items:center;justify-content:space-between;gap:24px;border:0;background:#fff;color:var(--ink);text-align:left;cursor:pointer;font-size:36px;line-height:1.3;letter-spacing:-0.72px}
 .faq-icon{width:60px;height:60px;flex:0 0 60px}
 .faq-icon img{width:60px;height:60px}
-.faq-answer{padding:0 91px 28px;color:#555;font-size:20px;line-height:1.5}
+.faq-answer{padding:0 221px 28px 91px;color:#555;font-size:20px;line-height:1.5}
 
 /* CTA */
 .cta{height:1906px;overflow:hidden}
