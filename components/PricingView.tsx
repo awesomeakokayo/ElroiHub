@@ -41,16 +41,31 @@ const tabs = [
 export default function PricingView() {
   const [tab, setTab] = useState<keyof typeof data>("ai");
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const keys = tabs.map(([k]) => k);
+    const idx = keys.indexOf(tab);
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setTab(keys[(idx + 1) % keys.length] as keyof typeof data);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setTab(keys[(idx - 1 + keys.length) % keys.length] as keyof typeof data);
+    }
+  };
+
   return (
     <div>
-      <div className="pricing-tabs" role="tablist" aria-label="Services pricing">
+      <div className="pricing-tabs" role="tablist" aria-label="Services pricing" onKeyDown={onKeyDown}>
         {tabs.map(([key, label]) => (
           <button
             key={key}
             type="button"
+            id={`tab-${key}`}
             className={tab === key ? "active" : ""}
             role="tab"
             aria-selected={tab === key}
+            aria-controls={`panel-${key}`}
+            tabIndex={tab === key ? 0 : -1}
             onClick={() => setTab(key)}
           >
             {label}
@@ -58,17 +73,17 @@ export default function PricingView() {
         ))}
       </div>
 
-      <p className="pricing-description">
+      <p className="pricing-description" id="pricing-desc">
         Automate processes, integrate AI tools, and build custom AI workflows for your business.
       </p>
 
       {tab === "combo" && (
-        <div className="promo-banner">
+        <div className="promo-banner" role="status">
           Limited-time promo pricing. Bundle AI + Graphic Design + Web Development and save up to 15%.
         </div>
       )}
 
-      <div className="pricing-grid">
+      <div className="pricing-grid" role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} aria-describedby="pricing-desc">
         {data[tab].map((entry) => {
           const [name, price, descOrOriginal, maybeDesc] = entry as readonly string[];
           const isCombo = tab === "combo";
@@ -84,7 +99,7 @@ export default function PricingView() {
               </div>
             </div>
             <p className={isCombo ? "combo-desc" : undefined}>{desc}</p>
-            <Link href={`/schedule?package=${encodeURIComponent(name)}`} className="price-btn">
+            <Link href={`/schedule?package=${encodeURIComponent(name)}`} className="price-btn" aria-label={`Get started with ${name}`}>
               Get Started
             </Link>
           </article>

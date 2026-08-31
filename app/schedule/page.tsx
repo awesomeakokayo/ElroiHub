@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import ScheduleForm from "@/components/ScheduleForm";
 
@@ -11,10 +12,12 @@ export default function SchedulePage() {
         </div>
         <h1 className="section-title">Book Your Onboarding Call</h1>
         <p className="schedule-description">
-          Let's get acquainted. A 30-minute kickoff call with your dedicated account manager to align on your brand goals, content direction, and first month's plan.
+          Let&apos;s get acquainted. A 30-minute kickoff call with your dedicated account manager to align on your brand goals, content direction, and first month&apos;s plan.
         </p>
       </div>
-      <ScheduleForm />
+      <Suspense fallback={<div className="form-panel">Loading scheduler…</div>}>
+        <ScheduleForm />
+      </Suspense>
     </main>
   );
 }

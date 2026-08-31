@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const faqPlus = "https://www.figma.com/api/mcp/asset/28e468e2-54c5-4fee-91b0-9fd62d0e3877.svg";
+const faqPlus = "/assets/plus.svg"; // figma 28e468e2...
 
 const faqs = [
   ["What industries do you work with?", "We work with ambitious businesses across technology, professional services, retail, education, media, and other growth-focused industries."],
@@ -16,21 +16,30 @@ export default function FaqList() {
 
   return (
     <div className="faq-list">
-      {faqs.map(([question, answer], index) => (
-        <div className={`faq-item ${open === index ? "open" : ""}`} key={question}>
+      {faqs.map(([question, answer], index) => {
+        const isOpen = open === index;
+        const btnId = `faq-btn-${index}`;
+        const panelId = `faq-panel-${index}`;
+        return (
+        <div className={`faq-item ${isOpen ? "open" : ""}`} key={question}>
           <button
+            id={btnId}
             className="faq-button"
-            onClick={() => setOpen(open === index ? null : index)}
-            aria-expanded={open === index}
+            onClick={() => setOpen(isOpen ? null : index)}
+            aria-expanded={isOpen}
+            aria-controls={panelId}
           >
             <span>{question}</span>
-            <span className="faq-icon">
-              <img src={faqPlus} alt="" />
+            <span className="faq-icon" aria-hidden="true">
+              <img src={faqPlus} alt="" onError={(e)=>{const t=e.currentTarget as HTMLImageElement; if(!t.dataset.fallback){t.dataset.fallback="1"; t.src="https://www.figma.com/api/mcp/asset/28e468e2-54c5-4fee-91b0-9fd62d0e3877.svg";}}} />
             </span>
           </button>
-          {open === index && <div className="faq-answer">{answer}</div>}
+          <div id={panelId} role="region" aria-labelledby={btnId} hidden={!isOpen} className="faq-answer">
+            {answer}
+          </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -73,3 +73,66 @@
   .quote{position:static!important;font-size:16px}
   .member-name{position:static!important;font-size:18px;margin-top:10px}
 }
+
+/* --- Visibility & UI improvements (approved sticky, banner, CTA, a11y) --- */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{left:12px;top:12px;width:auto;height:auto;padding:12px 16px;background:#fff;color:#0c200e;border-radius:10px;z-index:100;outline:2px solid var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+a:focus-visible, button:focus-visible, [role="tab"]:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.field input:focus, .field textarea:focus, .field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,174,0,.25);outline:none}
+
+/* Sticky header — fixed pill that becomes solid after scroll for readability */
+.site-header--sticky{position:fixed!important;left:50%!important;transform:translateX(-50%)!important;z-index:50;top:16px!important;backdrop-filter:saturate(1.2) blur(8px)}
+.site-header.site-header--overlay.site-header--sticky{background:rgba(255,255,255,.18)!important;color:#fff;box-shadow:none}
+.site-header.site-header--sticky:not(.site-header--overlay){background:rgba(255,255,255,.98);box-shadow:0 8px 32px rgba(0,0,0,.12)}
+@media (max-width:768px){.site-header--sticky{top:12px!important}}
+@media (max-width:900px){.site-header--sticky{top:12px!important}}
+
+/* Keep inner-page header also sticky */
+.inner-page .site-header--sticky{position:fixed!important}
+
+/* Package banner on schedule */
+.package-banner{margin:18px 0 22px;padding:14px 18px;border-radius:14px;background:#fff8dc;border:1px solid #ffeaa0;color:#5c4a00;font-size:15px;line-height:1.4}
+.package-banner strong{color:#7a5a00}
+
+/* Hero: restore overlay for contrast since local image may be light; keep blur 7.85 */
+.hero-overlay{display:block!important;background:linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,.30) 100%)!important}
+.hero-bg{background-color:#0c200e}
+
+/* CTA: fluid instead of fixed 1906px — approved */
+.cta{height:auto!important;min-height:clamp(760px, 92vh, 1100px)!important}
+.cta>img{height:clamp(420px, 56vh, 720px)!important;width:100%!important;object-fit:cover}
+.cta-content{height:auto!important;min-height:auto!important;padding:48px 8% 80px!important;justify-content:center}
+@media (min-width:901px){.cta-content{padding-top:56px!important} .cta h2{margin-top:16px}}
+@media (max-width:900px){.cta{height:auto!important;min-height:720px!important} .cta>img{height:360px!important} .cta-content{padding:32px 20px 56px!important}}
+
+/* Schedule: improve time grid + polish */
+.time-grid .date-btn{font-size:14px}
+.package-banner{animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Ghost already aria-hidden, reduce paint cost */
+.ghost{will-change:transform;contain:paint}
+
+/* Footer / ghost polish */
+.footer .ghost{opacity:.08!important}
+
+/* Contrast fixes — gold buttons with ink text for AA on white */
+.schedule-submit{background:var(--gold)!important;color:var(--ink)!important;border:2px solid transparent}
+.schedule-submit:hover{filter:brightness(0.95)}
+.contact-form .submit:hover{filter:brightness(1.05)}
+.price-btn{color:var(--green);font-weight:600}
+.price-btn:hover{background:var(--green);color:#fff!important}
+
+/* Contact layout fallback to avoid overflow at 901-1200 */
+@media (max-width:1200px) and (min-width:769px){
+  .contact-layout{grid-template-columns:1fr 1fr!important;gap:40px!important}
+}
+@media (min-width:901px) and (max-width:1100px){
+  .contact-layout{grid-template-columns:1fr 1fr!important}
+}
+
+/* Fix about double min-height conflict at mobile (precision kept 1005px) */
+@media (max-width:900px){
+  .about{min-height:auto!important;padding:60px 20px 80px!important}
+}

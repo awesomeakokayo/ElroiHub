@@ -3,17 +3,18 @@ import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import FaqList from "@/components/FaqList";
 
-// Figma-exported assets used by the landing page.
-const heroBg = "https://www.figma.com/api/mcp/asset/fd3e254e-d300-40c8-ab6a-e9a061b9de12.png";
-const cta = "https://www.figma.com/api/mcp/asset/85b414a2-9786-4234-8ff0-e6f279edb9d8.png";
-const whyImageA = "https://www.figma.com/api/mcp/asset/1ee4af42-5f98-4768-90cd-77d66d0d9d75.png";
-const whyImageB = "https://www.figma.com/api/mcp/asset/58b8423b-974e-4b16-b17c-6caa5770d5c5.png";
-const iconBadge = "https://www.figma.com/api/mcp/asset/dd3238bb-ff95-4857-b58e-0bb20dab5b66.svg";
-const iconFilm = "https://www.figma.com/api/mcp/asset/7398d77e-f71a-4d12-9c6f-8f7e82c0da42.svg";
-const iconMarketing = "https://www.figma.com/api/mcp/asset/5defbb61-f7ba-4be3-90ab-a176940d3344.svg";
-const iconWeb = "https://www.figma.com/api/mcp/asset/9a82ef04-3efe-4651-826a-e09a5e474aa4.svg";
-const iconAi = "https://www.figma.com/api/mcp/asset/9fac8c58-633c-4761-a5d0-4fd10804c715.svg";
-const processDot = "https://www.figma.com/api/mcp/asset/3c0c359a-829d-4840-920f-140adee139b8.svg";
+// Local assets (downloaded from Figma MCP for offline/performant loading). Figma hotlinks kept as fallback comments.
+// heroBg figma: fd3e254e-d300-40c8-ab6a-e9a061b9de12.png — local: /assets/hero-bg.png
+const heroBg = "/assets/hero-bg.png";
+const cta = "/assets/cta.png"; // figma 85b414a2...
+const whyImageA = "/assets/why-a.png"; // 1ee4af42...
+const whyImageB = "/assets/why-b.png"; // 58b8423b...
+const iconBadge = "/assets/icon-badge.svg"; // dd3238bb...
+const iconFilm = "/assets/icon-film.svg"; // 7398d77e...
+const iconMarketing = "/assets/icon-marketing.svg"; // 5defbb61...
+const iconWeb = "/assets/icon-web.svg"; // 9a82ef04...
+const iconAi = "/assets/icon-ai.svg"; // 9fac8c58...
+const processDot = "/assets/dot.svg"; // 3c0c359a...
 
 const services = [
   ["Media & Content Production", "Professional video editing, graphic design, content creation, and social media management.", true, iconFilm],
@@ -32,22 +33,22 @@ const why = [
 const team = [
   [
     "CEO — Kingdavid",
-    "https://www.figma.com/api/mcp/asset/d9f78600-fec6-44d2-bf77-0728bfa35ab1.png",
+    "/assets/team-ceo.png", // figma d9f78600...
     "“At Elroi Hub, we combine creativity, technology, and AI to help businesses grow, operate smarter, and achieve measurable results. Our goal is simple: build solutions that create real value and lasting impact.”",
   ],
   [
     "COO - Lenny Preye",
-    "https://www.figma.com/api/mcp/asset/681bd80c-24d0-4ea4-8471-f26ea79a5f43.png",
+    "/assets/team-coo.png", // 681bd80c...
     "At Elroi Hub, I focus on turning vision into consistent execution aligning our teams, systems, and AI powered processes so every project delivers measurable growth and lasting results for our clients.",
   ],
   [
     "CMO - Favour Owens",
-    "https://www.figma.com/api/mcp/asset/b774425f-7a57-46c6-8897-0d7efe4676b8.png",
+    "/assets/team-cmo.png", // b774425f...
     "“Brand identity goes far beyond consistency. It is the strategic process of building a distinct presence, creating meaningful connections, and sustaining a brand through purpose, dedication, and commitment. At Elroi Hub, we are committed to transforming ideas into impactful brands through strategic planning, creativity, and collaboration.”",
   ],
   [
     "Okorosa Asemebo Goodness - AI Research Lead.",
-    "https://www.figma.com/api/mcp/asset/24aec887-7a2e-480f-bc2c-a680aa378d5e.png",
+    "/assets/team-ai.png", // 24aec887...
     "“The future of AI will not belong to those who merely have access to powerful tools, but to those who understand how to think with them, direct them, and turn intelligence into execution. PromptForge AI is where that transformation begins.”",
   ],
 ] as const;
@@ -62,10 +63,10 @@ const processSteps = [
 export default function Home() {
   return (
     <>
-      <header id="home"><SiteHeader /></header>
-      <main>
-        <section className="hero">
-          <div className="hero-bg" style={{ backgroundImage: `url('${heroBg}')` }} />
+      <div id="home"><SiteHeader /></div>
+      <main id="main-content">
+        <section className="hero" aria-label="Hero">
+          <div className="hero-bg" style={{ backgroundImage: `url('${heroBg}')` }} role="img" aria-label="Elroi Hub hero" />
           <div className="hero-overlay" aria-hidden="true" />
           <div className="hero-content">
             <h1>Built for Brands That Refuse to <span className="gold">Blend</span> In.</h1>
@@ -86,7 +87,7 @@ export default function Home() {
         </section>
 
         <section id="services" className="section dark services section-pad">
-          <div className="ghost">WHAT</div>
+          <div className="ghost" aria-hidden="true">WHAT</div>
           <div className="content">
             <div className="section-kicker">Services</div>
             <h2 className="section-title"><span className="gold">What</span> We <span className="gold">Do?</span></h2>
@@ -106,7 +107,7 @@ export default function Home() {
         </section>
 
         <section className="section why section-pad">
-          <div className="ghost">WHY</div>
+          <div className="ghost" aria-hidden="true">WHY</div>
           <div className="content">
             <div className="section-kicker">Why Brands Choose Us</div>
             <h2 className="section-title why-title"><span className="gold">Why</span> ElRoi Hub</h2>
@@ -125,7 +126,7 @@ export default function Home() {
         </section>
 
         <section className="section dark section-pad" id="process">
-          <div className="ghost">HOW</div>
+          <div className="ghost" aria-hidden="true">HOW</div>
           <div className="content">
             <div className="section-kicker">Our Process</div>
             <h2 className="section-title process-title"><span className="gold">How</span> <span className="process-we">We</span> <span className="gold">Work</span></h2>
@@ -145,7 +146,7 @@ export default function Home() {
         </section>
 
         <section className="section dark section-pad team" id="team">
-          <div className="ghost">OUR TEAM</div>
+          <div className="ghost" aria-hidden="true">OUR TEAM</div>
           <div className="team-title">
             <div className="section-kicker">Meet the Team</div>
             <h2 className="section-title">The <span className="gold">People</span> Behind the <span className="gold">Growth.</span></h2>
@@ -164,15 +165,15 @@ export default function Home() {
         </section>
 
         <section className="section dark faq section-pad">
-          <div className="ghost">FAQ</div>
+          <div className="ghost" aria-hidden="true">FAQ</div>
           <div className="content">
             <h2 className="section-title faq-title">Frequently Asked <span className="gold">Questions</span></h2>
             <FaqList />
           </div>
         </section>
 
-        <section className="cta">
-          <img src={cta} alt="" />
+        <section className="cta" aria-label="Call to action">
+          <img src={cta} alt="" loading="lazy" decoding="async" />
           <div className="cta-content">
             <h2>Ready to Build <span className="gold">Influence</span> That <span className="gold">Lasts?</span></h2>
             <p className="cta-subtitle">Let&apos;s turn your brand&apos;s vision into market dominance.</p>

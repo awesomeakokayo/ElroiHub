@@ -1,11 +1,33 @@
 import "./globals.css";
 import "./precision.css";
 import "./ui-fixes.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Elroi Hub — Creative. Strategic. Built to dominate.",
+  metadataBase: new URL("https://elroihub.com"),
+  title: {
+    default: "Elroi Hub — Creative. Strategic. Built to dominate.",
+    template: "%s | Elroi Hub",
+  },
   description: "Elroi Hub combines creativity, technology, and AI to help brands build lasting influence.",
+  keywords: ["Elroi Hub", "creative agency", "AI solutions", "branding", "web development", "Lagos"],
+  authors: [{ name: "Elroi Hub" }],
+  openGraph: {
+    title: "Elroi Hub — Creative. Strategic. Built to dominate.",
+    description: "Elroi Hub combines creativity, technology, and AI to help brands build lasting influence.",
+    url: "https://elroihub.com",
+    siteName: "Elroi Hub",
+    locale: "en_NG",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title: "Elroi Hub", description: "Creative. Strategic. Built to dominate." },
+  icons: { icon: "/favicon.ico" },
+  alternates: { canonical: "/" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0c200e",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

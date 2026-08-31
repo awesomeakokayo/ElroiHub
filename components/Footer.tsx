@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-const logoMark = "https://www.figma.com/api/mcp/asset/69692345-589e-49e1-82b7-f6d363c27f96.png";
-const logoWordmark = "https://www.figma.com/api/mcp/asset/29cffe9a-5635-45a0-8ab6-8c746d7ba294.png";
+const logoMark = "/assets/footer-mark.png"; // figma 69692345...
+const logoWordmark = "/assets/footer-wordmark.png"; // 29cffe9a...
 
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="ghost">El Roi</div>
+      <div className="ghost" aria-hidden="true">El Roi</div>
       <div className="footer-grid">
         <div className="footer-brand">
           <div

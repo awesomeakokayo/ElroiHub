@@ -2,17 +2,17 @@ import SiteHeader from "@/components/SiteHeader";
 import ContactForm from "@/components/ContactForm";
 
 const socials = [
-  ["Instagram", "@elroihub", "https://www.instagram.com/elroihub", "https://www.figma.com/api/mcp/asset/1ec293ad-08e5-4315-bc0f-c07960a0ac3a.svg"],
-  ["Twitter / X", "@elroihub", "https://x.com/elroihub", "https://www.figma.com/api/mcp/asset/5d20fc6a-ec10-48bb-896c-e0b41ca83d3d.svg"],
-  ["LinkedIn", "Elroi Hub", "https://www.linkedin.com/company/elroihub", "https://www.figma.com/api/mcp/asset/321613bf-047a-4422-8326-9a933b8b92f4.svg"],
-  ["WhatsApp", "+234 801 234 5678", "https://wa.me/2348012345678", "https://www.figma.com/api/mcp/asset/d2e3a406-b097-4e4e-b33e-bcc822b3e343.svg"],
+  ["Instagram", "@elroihub", "https://www.instagram.com/elroihub", "/assets/social-instagram.svg"],
+  ["Twitter / X", "@elroihub", "https://x.com/elroihub", "/assets/social-x.svg"],
+  ["LinkedIn", "Elroi Hub", "https://www.linkedin.com/company/elroihub", "/assets/social-linkedin.svg"],
+  ["WhatsApp", "+234 801 234 5678", "https://wa.me/2348012345678", "/assets/social-whatsapp.svg"],
 ] as const;
 
 const contactIcons = {
-  email: "https://www.figma.com/api/mcp/asset/21424bac-60d6-4f03-b398-e3df1b7264f9.svg",
-  phone: "https://www.figma.com/api/mcp/asset/06c00ca7-45b1-4110-a4e2-a18abfa7b0c8.svg",
-  location: "https://www.figma.com/api/mcp/asset/7623bd5a-14e0-457d-8879-60402c250e57.svg",
-  arrow: "https://www.figma.com/api/mcp/asset/1be57858-f558-44e6-83de-eeece590a66a.svg",
+  email: "/assets/icon-email.svg",
+  phone: "/assets/icon-phone.svg",
+  location: "/assets/icon-location.svg",
+  arrow: "/assets/icon-arrow.svg",
 };
 
 export default function ContactPage() {
