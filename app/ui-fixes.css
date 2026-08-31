@@ -32,7 +32,7 @@
     display:grid;
     grid-template-columns:710px 710px;
     column-gap:202px;
-    row-gap:193px;
+    row-gap:84px;
   }
   .team-member{position:relative;width:710px;height:321px;display:block;min-width:0}
   .avatar{position:absolute;left:0;top:0;width:120px;height:120px;object-fit:cover;border-radius:50%}
