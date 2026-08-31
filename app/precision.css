@@ -12,6 +12,8 @@
  .site-header .brand,.site-header .brand img{width:100px}.site-header .brand img{height:64px}
  .site-header .nav{width:auto;flex:1;margin-left:34px;gap:16px;font-size:20px;justify-content:center}
  .site-header .nav a{width:auto!important}
+ .site-header--overlay{background:rgba(255,255,255,.2);color:#fff}
+ .site-header--overlay .nav a,.site-header--overlay .brand{color:#fff}
  .site-header .header-cta{width:180px;flex-basis:180px;height:56px;font-size:20px}
  .hero-content{width:76%;margin-left:8%}
  .hero h1{font-size:76px}.hero p{font-size:32px}
@@ -42,14 +44,15 @@
  .service-card{height:auto;min-height:260px}
  .why .why-grid{height:auto;display:grid;margin-top:36px;gap:18px}
  .why .why-card{position:relative!important;inset:auto!important;width:100%!important;height:300px;padding:30px}
- #process .why-grid{grid-template-columns:1fr!important}
- #process .why-card{height:220px}
- .process-grid .why-card:nth-child(4){grid-column:auto;display:block;padding:38px}
- .process-grid .why-card:nth-child(4) p{font-size:24px;max-width:100%;margin-top:12px}
+ .why-card-art{display:none}
+ #process .process-grid{grid-template-columns:1fr!important}
+ #process .process-card{height:220px}
+ .process-scale{grid-column:auto;display:block;padding:38px}
+ .process-scale p{font-size:24px;max-width:100%;margin-top:12px}
  .team-grid{gap:30px}
  .team-member{grid-template-columns:86px 1fr;gap:16px}.avatar{width:86px;height:86px}.quote{font-size:16px}.member-name{font-size:18px}
  .faq-button{min-height:82px;padding:20px;font-size:20px}.faq-answer{padding:0 20px 24px;font-size:16px}
- .cta{height:auto;min-height:900px}.cta>img{height:560px}.cta-content{height:auto;min-height:900px;padding:600px 20px 80px}.cta h2{font-size:58px}.cta .btn{min-width:0;width:100%;height:58px;font-size:18px}
+ .cta{height:auto;min-height:900px}.cta>img{height:560px}.cta-content{height:auto;min-height:900px;padding:600px 20px 80px}.cta h2{font-size:58px}.cta-subtitle{font-size:22px;margin-top:16px}.cta .btn{min-width:0;width:100%;height:58px;font-size:18px}
  .footer{min-height:760px;padding:70px 20px}.footer-grid{grid-template-columns:1fr!important;gap:50px}.footer-brand img{width:170px;height:100px}.footer-brand p{font-size:20px}.footer-copy{margin-top:90px!important;font-size:16px!important}
  .inner-page{padding-left:20px;padding-right:20px;padding-top:150px}
  .pricing-page{padding-left:20px;padding-right:20px;padding-top:150px;min-height:0}

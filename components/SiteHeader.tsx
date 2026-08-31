@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-const logo = "https://www.figma.com/api/mcp/asset/c7117f81-e111-446e-a72f-f637527543b4.png";
+const logo = "https://www.figma.com/api/mcp/asset/8e517b34-050b-4089-bfe8-f20d23c31f32.png";
 
 const links = [
   ["Home", "/#home"],
@@ -14,12 +14,16 @@ const links = [
   ["Contact", "/contact"],
 ] as const;
 
-export default function SiteHeader() {
+type SiteHeaderProps = {
+  overlay?: boolean;
+};
+
+export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header${overlay ? " site-header--overlay" : ""}`}>
         <Link href="/" className="brand" aria-label="Elroi Hub home" onClick={() => setOpen(false)}>
           <img src={logo} alt="Elroi Hub" />
         </Link>

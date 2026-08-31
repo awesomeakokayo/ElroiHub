@@ -24,17 +24,17 @@ const data = {
     ["Custom Web Application", "$1500+", "Customized web-based systems & advanced functionality"],
   ],
   combo: [
-    ["Starter Combo", "$255", "AI Starter + Graphics Basic + Landing Page"],
-    ["Growth Combo", "$595", "AI Growth + Graphics Standard + Business Website"],
-    ["Premium Combo", "$1,105", "AI Pro + Graphics Premium + Professional Website"],
-    ["Business Combo", "$1,955", "AI Enterprise + Brand Identity + E-Commerce Website"],
+    ["Starter Combo", "$255", "$300", "AI Starter\nGraphics Basic\nLanding Page"],
+    ["Growth Combo", "$595", "$700", "AI Growth\nGraphics Standard\nBusiness Website"],
+    ["Premium Combo", "$1,105", "$1,300", "AI Pro\nGraphics Premium\nProfessional Website"],
+    ["Business Combo", "$1,955", "$2,300", "AI Enterprise\nBrand Identity\nE-Commerce Website"],
   ],
 } as const;
 
 const tabs = [
   ["ai", "AI SERVICES"],
   ["graphics", "GRAPHICS DESIGN"],
-  ["web", "WEB DEVELOPMENT"],
+  ["web", "WEB DEVELOPEMENT"],
   ["combo", "COMBO PACKAGES"],
 ] as const;
 
@@ -63,24 +63,33 @@ export default function PricingView() {
       </p>
 
       {tab === "combo" && (
-        <p className="promo">
+        <div className="promo-banner">
           Limited-time promo pricing. Bundle AI + Graphic Design + Web Development and save up to 15%.
-        </p>
+        </div>
       )}
 
       <div className="pricing-grid">
-        {data[tab].map(([name, price, desc]) => (
-          <article className="price-card" key={name}>
+        {data[tab].map((entry) => {
+          const [name, price, descOrOriginal, maybeDesc] = entry as readonly string[];
+          const isCombo = tab === "combo";
+          const original = isCombo ? descOrOriginal : undefined;
+          const desc = isCombo ? maybeDesc! : descOrOriginal;
+          return (
+          <article className={`price-card${isCombo ? " combo-card" : ""}`} key={name}>
             <div className="price-top">
               <span className="pill">{name}</span>
-              <span className="price">{price}</span>
+              <div className="price-stack">
+                {original && <span className="price-original">{original}</span>}
+                <span className="price">{price}</span>
+              </div>
             </div>
-            <p>{desc}</p>
+            <p className={isCombo ? "combo-desc" : undefined}>{desc}</p>
             <Link href={`/schedule?package=${encodeURIComponent(name)}`} className="price-btn">
               Get Started
             </Link>
           </article>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
