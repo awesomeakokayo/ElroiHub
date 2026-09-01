@@ -73,8 +73,11 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
 
 /* Header nav */
 .nav{display:flex;align-items:center;gap:24px;margin-left:69px;white-space:nowrap;font-size:26px;line-height:1}
-.nav a{transition:opacity .18s ease}
-.nav a:hover{opacity:.62}
+.nav a{transition:color .18s ease,opacity .18s ease,transform .18s ease}
+.nav a:hover{color:var(--green)!important;opacity:1}
+.nav a.active{color:var(--green)!important;opacity:1;font-weight:600}
+.site-header--overlay .nav a:hover{color:var(--lime)!important;opacity:1}
+.site-header--overlay .nav a.active{color:var(--lime)!important;opacity:1}
 .header-cta,.header-cta:link,.header-cta:visited,.header-cta:hover,.header-cta:active,.header-cta:focus-visible{color:#fff!important}
 .header-cta{margin-left:auto;width:227px;height:68px;display:flex;align-items:center;justify-content:center;background:var(--green);color:#fff!important;border-radius:25px;font-size:26px;font-weight:500}
 .mobile-menu-button,.mobile-menu{display:none}
@@ -83,10 +86,12 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
 .site-header--sticky{position:fixed!important;left:50%!important;transform:translateX(-50%)!important;z-index:50;top:16px!important;backdrop-filter:saturate(1.2) blur(8px);will-change:transform;transition:background .3s ease,color .3s ease,box-shadow .3s ease}
 .site-header.site-header--overlay.site-header--sticky{background:rgba(5,7,6,.6)!important;color:#fff!important;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .site-header.site-header--overlay.site-header--sticky .nav a,.site-header.site-header--overlay.site-header--sticky .nav a:link,.site-header.site-header--overlay.site-header--sticky .nav a:visited{color:#fff!important}
-.site-header.site-header--overlay.site-header--sticky .nav a:hover{color:#fff!important;opacity:.72}
+.site-header.site-header--overlay.site-header--sticky .nav a:hover{color:var(--lime)!important;opacity:1}
+.site-header.site-header--overlay.site-header--sticky .nav a.active{color:var(--lime)!important;opacity:1}
 .site-header.site-header--sticky:not(.site-header--overlay){background:rgba(255,255,255,.98);color:var(--ink);box-shadow:0 8px 32px rgba(0,0,0,.12)}
 .site-header.site-header--sticky:not(.site-header--overlay) .nav a,.site-header.site-header--sticky:not(.site-header--overlay) .nav a:link,.site-header.site-header--sticky:not(.site-header--overlay) .nav a:visited{color:var(--ink)!important}
-.site-header.site-header--sticky:not(.site-header--overlay) .nav a:hover{color:var(--ink)!important;opacity:.62}
+.site-header.site-header--sticky:not(.site-header--overlay) .nav a:hover{color:var(--green)!important;opacity:1}
+.site-header.site-header--sticky:not(.site-header--overlay) .nav a.active{color:var(--green)!important;opacity:1}
 .site-header--sticky .brand-wordmark{filter:none;opacity:1}
 .inner-page .site-header--sticky{position:fixed!important}
 
@@ -437,8 +442,9 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
   .mobile-menu-button{width:42px;height:42px;margin-left:auto;border:0;border-radius:21px;background:var(--green);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;cursor:pointer;padding:0}
   .mobile-menu-button span{width:17px;height:2px;border-radius:2px;background:#fff}
   .mobile-menu{position:fixed;z-index:35;top:92px;left:16px;right:16px;display:grid;gap:8px;padding:14px;border-radius:22px;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.28)}
-  .mobile-menu a{padding:12px 14px;border-radius:12px;color:var(--ink)!important;font-size:16px}
-  .mobile-menu a:hover{background:#f4f7f3}
+  .mobile-menu a{padding:12px 14px;border-radius:12px;color:var(--ink)!important;font-size:16px;transition:color .18s ease,background .18s ease}
+  .mobile-menu a:hover{color:var(--green)!important;background:#f4f7f3}
+  .mobile-menu a.active{color:var(--green)!important;background:#e8f5e9;font-weight:600}
   .mobile-menu .mobile-menu-cta{background:var(--green);color:#fff!important;text-align:center}
 
   .hero{min-height:720px}

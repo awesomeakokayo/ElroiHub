@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 // Local assets (downloaded), keep Figma hotlinks as fallback via onError
@@ -21,8 +22,10 @@ type SiteHeaderProps = {
 };
 
 export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeHref, setActiveHref] = useState<string>("/#home");
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -33,6 +36,38 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Active section — green highlight + scroll-spy for hash sections
+  useEffect(() => {
+    const updateActive = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path === "/pricing") { setActiveHref("/pricing"); return; }
+      if (path === "/contact") { setActiveHref("/contact"); return; }
+      if (path === "/schedule") { setActiveHref("/contact"); return; }
+      if (hash) { setActiveHref(`/${hash}`); return; }
+      if (path === "/") {
+        const ids = ["home", "about", "services", "team"];
+        let current = "/#home";
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 160) current = `/#${id}`;
+        }
+        setActiveHref(current);
+        return;
+      }
+      setActiveHref(path);
+    };
+    updateActive();
+    window.addEventListener("hashchange", updateActive);
+    window.addEventListener("scroll", updateActive, { passive: true });
+    return () => {
+      window.removeEventListener("hashchange", updateActive);
+      window.removeEventListener("scroll", updateActive);
+    };
+  }, [pathname]);
 
   // Body scroll lock + Esc + focus trap
   useEffect(() => {
@@ -137,11 +172,20 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
           />
         </Link>
         <nav className="nav" aria-label="Primary navigation" style={{ lineHeight: "normal" }}>
-          {links.map(([label, href]) => (
-            <Link key={label} href={href} onClick={() => setOpen(false)}>
-              {label}
-            </Link>
-          ))}
+          {links.map(([label, href]) => {
+            const isActive = activeHref === href || (href === "/#home" && activeHref === "/") || (href === "/#home" && activeHref === "/#home");
+            return (
+              <Link
+                key={label}
+                href={href}
+                onClick={() => { setActiveHref(href); setOpen(false); }}
+                className={isActive ? "active" : undefined}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
         <Link href="/schedule" className="header-cta" onClick={() => setOpen(false)}>
           Book a Call
@@ -164,11 +208,20 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
         <>
           <div className="mobile-menu-backdrop" aria-hidden="true" onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 34, background: "rgba(0,0,0,0.4)" }} />
           <div ref={menuRef} id="mobile-menu" className="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
-            {links.map(([label, href]) => (
-              <Link key={label} href={href} onClick={() => setOpen(false)}>
-                {label}
-              </Link>
-            ))}
+            {links.map(([label, href]) => {
+              const isActive = activeHref === href || (href === "/#home" && activeHref === "/") || (href === "/#home" && activeHref === "/#home");
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  onClick={() => { setActiveHref(href); setOpen(false); }}
+                  className={isActive ? "active" : undefined}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {label}
+                </Link>
+              );
+            })}
             <Link href="/schedule" className="mobile-menu-cta" onClick={() => setOpen(false)}>
               Book a Call
             </Link>
