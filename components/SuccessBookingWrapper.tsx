@@ -1,109 +1,158 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import ScheduleForm from "./ScheduleForm";
 
-export default function SuccessBookingWrapper({ planName, email, sessionId }: { planName: string; email: string; sessionId?: string }) {
+function todayWATString() {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Lagos" });
+}
+
+function isSunday(iso: string) {
+  const d = new Date(`${iso}T12:00:00`);
+  return new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "Africa/Lagos" }).format(d) === "Sun";
+}
+
+function nextFiveBusinessDates(startIso: string) {
+  const dates: string[] = [];
+  let cursor = new Date(`${startIso}T12:00:00`);
+  cursor.setDate(cursor.getDate() + 1);
+  while (dates.length < 5) {
+    const iso = cursor.toISOString().slice(0, 10);
+    if (!isSunday(iso)) dates.push(iso);
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return dates;
+}
+
+function displayDate(iso: string) {
+  return new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    timeZone: "Africa/Lagos",
+  });
+}
+
+function displayBookedDate(iso: string) {
+  return new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "Africa/Lagos",
+  });
+}
+
+export default function SuccessBookingWrapper({ planName, email }: { planName: string; email: string; sessionId?: string }) {
   const [booked, setBooked] = useState<null | { date: string; time: string; calendarUrl: string; email: string }>(null);
+  const [date, setDate] = useState("");
+  const [bookingEmail, setBookingEmail] = useState(email);
+  const [name, setName] = useState("");
+  const [notes, setNotes] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
+  const [error, setError] = useState("");
+  const [dates, setDates] = useState<string[]>([]);
 
-  // ScheduleForm will call onBooked when it succeeds — we intercept via custom event?
-  // Simpler: we wrap ScheduleForm and listen for its success message via polling of its calendarUrl state?
-  // For now, we render ScheduleForm and also handle its success via a callback prop we add.
-  // To avoid refactoring ScheduleForm, we render it and after it succeeds it shows its own success box.
-  // Here we provide a richer Call Booked view when booked is set.
+  useEffect(() => {
+    const today = todayWATString();
+    const options = nextFiveBusinessDates(today);
+    setDates(options);
+    setDate(options[0] || "");
+  }, []);
 
-  // We'll create a small wrapper that renders ScheduleForm but also exposes an onSuccess hook via window event?
-  // Easiest: duplicate ScheduleForm logic here with plan context, but reuse its UI.
-  // For MVP, just render ScheduleForm with package=planName and email prefill via query, and also show Call Booked section below when booked.
+  const selectedTime = "09:00";
+  const selectedPlan = useMemo(() => planName || "Growth", [planName]);
+
+  async function submitBooking() {
+    setError("");
+    if (!name.trim() || name.trim().length < 2) { setError("Please enter your full name."); return; }
+    if (!bookingEmail.trim() || !/^\S+@\S+\.\S+$/.test(bookingEmail.trim())) { setError("Please enter a valid email address."); return; }
+    if (!date) { setError("Please choose a date."); return; }
+
+    setStatus("sending");
+    try {
+      const form = new FormData();
+      form.set("name", name.trim());
+      form.set("email", bookingEmail.trim());
+      form.set("date", date);
+      form.set("time", selectedTime);
+      form.set("notes", notes.trim());
+      form.set("package", selectedPlan);
+
+      const res = await fetch("/api/schedule", { method: "POST", body: form });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Unable to book this time.");
+      setBooked({ date, time: selectedTime, calendarUrl: data.calendarUrl || "", email: bookingEmail.trim() });
+    } catch (e) {
+      setStatus("error");
+      setError(e instanceof Error ? e.message : "Unable to book this time.");
+    }
+  }
 
   if (booked) {
-    const { date, time, calendarUrl, email: bookedEmail } = booked;
-    const displayDate = (() => {
-      try {
-        return new Date(`${date}T12:00:00`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "Africa/Lagos" });
-      } catch { return date; }
-    })();
     return (
-      <div style={{ maxWidth: 760, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", padding: "18px 0 10px" }}>
-          <div style={{ width: 48, height: 48, borderRadius: 999, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", display: "grid", placeItems: "center", margin: "0 auto 10px" }}>
-            <span style={{ width: 28, height: 28, borderRadius: 999, background: "#fff", display: "grid", placeItems: "center", fontSize: 14 }}>▦</span>
-          </div>
-          <h2 className="section-title" style={{ fontSize: "clamp(28px,4vw,38px)", textAlign: "center", color: "#fff" }}>Call Booked!</h2>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.8)", fontSize: 13, marginTop: 6 }}>
-            Your onboarding call is confirmed for {displayDate} at {time} WAT.<br />
-            A calendar invite has been sent to {bookedEmail}.
-          </p>
+      <section className="success-booked">
+        <img className="success-calendar-icon" src="https://www.figma.com/api/mcp/asset/04f49ee8-242f-453e-8170-6dadd11de17f.svg" alt="" aria-hidden="true" />
+        <h2>Call Booked!</h2>
+        <p className="success-booked-copy">
+          Your onboarding call is confirmed for {displayBookedDate(booked.date)} at 9:00 AM.<br />
+          A calendar invite has been sent to {booked.email}.
+        </p>
+
+        <div className="success-booked-details">
+          <div className="success-detail-row"><span className="success-detail-label">Date &amp; Time</span><strong className="success-detail-value">{displayBookedDate(booked.date)} · 9:00 AM</strong></div>
+          <div className="success-detail-row"><span className="success-detail-label">Duration</span><strong className="success-detail-value">30 minutes</strong></div>
+          <div className="success-detail-row"><span className="success-detail-label">Format</span><strong className="success-detail-value">Video Call (Google Meet link will be sent)</strong></div>
+          <div className="success-detail-row"><span className="success-detail-label">Timezone</span><strong className="success-detail-value">West Africa Time (WAT / UTC+1)</strong></div>
+          <div className="success-detail-row"><span className="success-detail-label">Host</span><strong className="success-detail-value">DDFCG HUB Account Manager</strong></div>
         </div>
-        <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: 16, marginTop: 12 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>DATE & TIME</span><strong>{displayDate} • {time} WAT</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>DURATION</span><strong>30 minutes</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>FORMAT</span><strong>Video Call (Google Meet link to be sent)</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>TIMEZONE</span><strong>West Africa Time (WAT, UTC+1)</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>HOST</span><strong>ElRoi Hub Account Manager</strong></div>
+
+        <div className="success-actions">
+          <Link href="/" className="success-home-btn">Back to Home</Link>
+          {booked.calendarUrl && <a className="success-calendar-btn" href={booked.calendarUrl} target="_blank" rel="noreferrer noopener">Add to Google Calendar</a>}
         </div>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 18, flexWrap: "wrap" }}>
-          <Link href="/" className="btn btn-outline" style={{ minWidth: 160, height: 44, borderColor: "rgba(255,255,255,0.4)", fontSize: 14 }}>Back to Home</Link>
-          {calendarUrl && <a href={calendarUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ minWidth: 200, height: 44, fontSize: 14, background: "#ffae00", color: "#1d1d1d" }}>Add to Google Calendar</a>}
-        </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div>
-      <div style={{ textAlign: "center", marginBottom: 12 }}>
-        <div style={{ display: "inline-flex", padding: "6px 12px", borderRadius: 999, background: "#affc9e", color: "#1a3d1a", fontSize: 10, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase" }}>Schedule a Call</div>
-        <h2 className="section-title" style={{ fontSize: "clamp(24px,3.2vw,32px)", textAlign: "center", color: "#fff", marginTop: 8 }}>Book Your Onboarding Call</h2>
-        <p style={{ textAlign: "center", color: "rgba(255,255,255,0.8)", fontSize: 13, marginTop: 6 }}>Let&apos;s get acquainted. A 30-minute kickoff call with your dedicated account manager to align on your brand goals, content direction, and first month&apos;s plan.</p>
-      </div>
-      {/* Reuse existing ScheduleForm but intercept success to show Call Booked UI above */}
-      <div style={{ position: "relative" }}>
-        <ScheduleFormWrapper planName={planName} email={email} onBooked={(d) => setBooked(d)} />
-      </div>
-    </div>
-  );
-}
+    <section className="onboarding-section">
+      <div className="onboarding-kicker">Schedule a Call</div>
+      <h2>Book Your Onboarding Call</h2>
+      <p className="onboarding-copy">Let&apos;s get acquainted. A 30-minute kickoff call with your dedicated account manager to align on your brand goals, content direction, and first month&apos;s plan.</p>
 
-// Thin wrapper around ScheduleForm that lifts its success data
-import { useEffect, useRef } from "react";
-function ScheduleFormWrapper({ planName, email, onBooked }: { planName: string; email: string; onBooked: (d: { date: string; time: string; calendarUrl: string; email: string }) => void }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    // Monkey-patch fetch? Instead, we poll for ScheduleForm's success DOM
-    // Simpler: just render ScheduleForm with package and let its own success show, but also observe for calendarUrl
-    const obs = new MutationObserver(() => {
-      const el = ref.current?.querySelector('a[href*="calendar.google.com"]') as HTMLAnchorElement | null;
-      if (el) {
-        // Try to extract date/time from form state via the displayed message? For MVP, use generic
-        const dateInput = ref.current?.querySelector('input[name="date"]') as HTMLInputElement | null;
-        const timeBtn = ref.current?.querySelector('.date-btn.selected') as HTMLButtonElement | null;
-        const date = dateInput?.value || "";
-        const time = timeBtn?.textContent?.replace(" WAT","").trim() || "09:00";
-        const emailInput = ref.current?.querySelector('input[name="email"]') as HTMLInputElement | null;
-        onBooked({ date, time, calendarUrl: el.href, email: emailInput?.value || email });
-      }
-    });
-    if (ref.current) obs.observe(ref.current, { childList: true, subtree: true });
-    return () => obs.disconnect();
-  }, [email, onBooked]);
-  // We need to pass package via URL search param — ScheduleForm reads useSearchParams(). So set it
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    if (!url.searchParams.get("package")) {
-      url.searchParams.set("package", planName);
-      window.history.replaceState({}, "", url.toString());
-    }
-    if (email && !url.searchParams.get("email")) {
-      // ScheduleForm doesn't read email from query, but we could set it via DOM
-      const el = document.querySelector('input[name="email"]') as HTMLInputElement | null;
-      if (el && !el.value) el.value = email;
-    }
-  }, [planName, email]);
-  return (
-    <div ref={ref}>
-      <ScheduleForm />
-    </div>
+      <div className="onboarding-layout">
+        <section className="onboarding-card" aria-labelledby="onboarding-date-title">
+          <h3 className="panel-title" id="onboarding-date-title">Select a Date &amp; Time</h3>
+          <div className="onboarding-dates">
+            {dates.map((option) => (
+              <button
+                key={option}
+                type="button"
+                className={`onboarding-date-btn${date === option ? " selected" : ""}`}
+                onClick={() => setDate(option)}
+                aria-pressed={date === option}
+              >
+                {displayDate(option)}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="onboarding-card" aria-labelledby="onboarding-contact-title">
+          <h3 className="panel-title" id="onboarding-contact-title">Your Contact Info</h3>
+          <div className="onboarding-contact-fields">
+            <input value={name} onChange={e => setName(e.target.value)} placeholder="Your full name" maxLength={80} />
+            <input type="email" value={bookingEmail} onChange={e => setBookingEmail(e.target.value)} placeholder="Email for calendar invite" maxLength={254} />
+            <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Anything specific you'd like to discuss? (optional)" maxLength={2000} />
+          </div>
+        </section>
+      </div>
+
+      <button className="onboarding-submit" type="button" onClick={submitBooking} disabled={status === "sending"}>
+        {status === "sending" ? "Confirming…" : "Confirm Booking"}
+      </button>
+      {error && <div className="checkout-error" style={{ marginTop: 14 }}>{error}</div>}
+    </section>
   );
 }
