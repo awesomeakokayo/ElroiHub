@@ -145,8 +145,11 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section team-ghost-section" aria-hidden="true">
+          <div className="ghost team-ghost-text">OUR TEAM</div>
+        </section>
+
         <section className="section dark section-pad team" id="team">
-          <div className="ghost" aria-hidden="true">OUR TEAM</div>
           <div className="team-title">
             <div className="section-kicker">Meet the Team</div>
             <h2 className="section-title">The <span className="gold">People</span> Behind the <span className="gold">Growth.</span></h2>
