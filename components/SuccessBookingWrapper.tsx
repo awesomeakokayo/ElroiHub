@@ -43,24 +43,27 @@ function displayBookedDate(iso: string) {
   });
 }
 
+const TIME_SLOTS = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"];
+
 export default function SuccessBookingWrapper({ planName, email }: { planName: string; email: string; sessionId?: string }) {
   const [booked, setBooked] = useState<null | { date: string; time: string; calendarUrl: string; email: string }>(null);
   const [date, setDate] = useState("");
+  const [time, setTime] = useState(TIME_SLOTS[0]);
   const [bookingEmail, setBookingEmail] = useState(email);
   const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const [error, setError] = useState("");
-  const [dates, setDates] = useState<string[]>([]);
+
+  const minDate = useMemo(() => todayWATString(), []);
 
   useEffect(() => {
     const today = todayWATString();
     const options = nextFiveBusinessDates(today);
-    setDates(options);
     setDate(options[0] || "");
-  }, []);
+    setBookingEmail(email);
+  }, [email]);
 
-  const selectedTime = "09:00";
   const selectedPlan = useMemo(() => planName || "Growth", [planName]);
 
   async function submitBooking() {
@@ -68,6 +71,7 @@ export default function SuccessBookingWrapper({ planName, email }: { planName: s
     if (!name.trim() || name.trim().length < 2) { setError("Please enter your full name."); return; }
     if (!bookingEmail.trim() || !/^\S+@\S+\.\S+$/.test(bookingEmail.trim())) { setError("Please enter a valid email address."); return; }
     if (!date) { setError("Please choose a date."); return; }
+    if (isSunday(date)) { setError("Sundays are closed. Please pick Mon–Sat (WAT)."); return; }
 
     setStatus("sending");
     try {
@@ -75,14 +79,14 @@ export default function SuccessBookingWrapper({ planName, email }: { planName: s
       form.set("name", name.trim());
       form.set("email", bookingEmail.trim());
       form.set("date", date);
-      form.set("time", selectedTime);
+      form.set("time", time);
       form.set("notes", notes.trim());
       form.set("package", selectedPlan);
 
       const res = await fetch("/api/schedule", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Unable to book this time.");
-      setBooked({ date, time: selectedTime, calendarUrl: data.calendarUrl || "", email: bookingEmail.trim() });
+      setBooked({ date, time, calendarUrl: data.calendarUrl || "", email: bookingEmail.trim() });
     } catch (e) {
       setStatus("error");
       setError(e instanceof Error ? e.message : "Unable to book this time.");
@@ -95,12 +99,12 @@ export default function SuccessBookingWrapper({ planName, email }: { planName: s
         <img className="success-calendar-icon" src="https://www.figma.com/api/mcp/asset/04f49ee8-242f-453e-8170-6dadd11de17f.svg" alt="" aria-hidden="true" />
         <h2>Call Booked!</h2>
         <p className="success-booked-copy">
-          Your onboarding call is confirmed for {displayBookedDate(booked.date)} at 9:00 AM.<br />
+          Your onboarding call is confirmed for {displayBookedDate(booked.date)} at {booked.time} WAT.<br />
           A calendar invite has been sent to {booked.email}.
         </p>
 
         <div className="success-booked-details">
-          <div className="success-detail-row"><span className="success-detail-label">Date &amp; Time</span><strong className="success-detail-value">{displayBookedDate(booked.date)} · 9:00 AM</strong></div>
+          <div className="success-detail-row"><span className="success-detail-label">Date &amp; Time</span><strong className="success-detail-value">{displayBookedDate(booked.date)} · {booked.time} WAT</strong></div>
           <div className="success-detail-row"><span className="success-detail-label">Duration</span><strong className="success-detail-value">30 minutes</strong></div>
           <div className="success-detail-row"><span className="success-detail-label">Format</span><strong className="success-detail-value">Video Call (Google Meet link will be sent)</strong></div>
           <div className="success-detail-row"><span className="success-detail-label">Timezone</span><strong className="success-detail-value">West Africa Time (WAT / UTC+1)</strong></div>
@@ -124,27 +128,39 @@ export default function SuccessBookingWrapper({ planName, email }: { planName: s
       <div className="onboarding-layout">
         <section className="onboarding-card" aria-labelledby="onboarding-date-title">
           <h3 className="panel-title" id="onboarding-date-title">Select a Date &amp; Time</h3>
-          <div className="onboarding-dates">
-            {dates.map((option) => (
-              <button
-                key={option}
-                type="button"
-                className={`onboarding-date-btn${date === option ? " selected" : ""}`}
-                onClick={() => setDate(option)}
-                aria-pressed={date === option}
-              >
-                {displayDate(option)}
-              </button>
-            ))}
-          </div>
+          <p style={{ margin: "-12px 0 18px", color: "#666", fontSize: 13 }}>All times are West Africa Time (WAT, Africa/Lagos). Mon–Sat only.</p>
+          <label className="field">
+            <span>Date *</span>
+            <input type="date" value={date} min={minDate} onChange={(e) => setDate(e.target.value)} required />
+            {date && <small style={{ display: "block", marginTop: 6, color: isSunday(date) ? "#c00" : "#555" }}>{displayDate(date)} {isSunday(date) ? "— Sundays closed" : ""}</small>}
+          </label>
+          <fieldset className="field" style={{ border: 0, padding: 0, margin: "16px 0 0" }}>
+            <legend style={{ display: "block", marginBottom: 6, color: "#555", fontFamily: "'DM Sans',sans-serif", fontSize: 11.5, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase" }}>Time (WAT) *</legend>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 10 }}>
+              {TIME_SLOTS.map((t) => (
+                <button key={t} type="button" className={`date-btn ${time === t ? "selected" : ""}`} aria-pressed={time === t} onClick={() => setTime(t)}>
+                  {t} WAT
+                </button>
+              ))}
+            </div>
+          </fieldset>
         </section>
 
         <section className="onboarding-card" aria-labelledby="onboarding-contact-title">
           <h3 className="panel-title" id="onboarding-contact-title">Your Contact Info</h3>
           <div className="onboarding-contact-fields">
-            <input value={name} onChange={e => setName(e.target.value)} placeholder="Your full name" maxLength={80} />
-            <input type="email" value={bookingEmail} onChange={e => setBookingEmail(e.target.value)} placeholder="Email for calendar invite" maxLength={254} />
-            <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Anything specific you'd like to discuss? (optional)" maxLength={2000} />
+            <label className="field">
+              <span>Full Name *</span>
+              <input value={name} onChange={e => setName(e.target.value)} placeholder="Your full name" maxLength={80} required />
+            </label>
+            <label className="field">
+              <span>Email for calendar invite *</span>
+              <input type="email" value={bookingEmail} onChange={e => setBookingEmail(e.target.value)} placeholder="you@company.com" maxLength={254} required />
+            </label>
+            <label className="field">
+              <span>Anything specific you&apos;d like to discuss?</span>
+              <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" maxLength={2000} rows={4} />
+            </label>
           </div>
         </section>
       </div>

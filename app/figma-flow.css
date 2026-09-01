@@ -410,7 +410,7 @@
 .success-plan-value.active { color: #2d5c2d; }
 
 .success-next-divider {
-  margin: 508px auto 0;
+  margin: 80px auto 0;
   width: min(1060px,100%);
   display: flex;
   align-items: center;
@@ -430,7 +430,7 @@
 
 .onboarding-section {
   text-align: left;
-  margin-top: 112px;
+  margin-top: 40px;
 }
 
 .onboarding-kicker {
@@ -664,8 +664,8 @@
   .success-page h1 { margin-top: 28px; }
   .success-lead, .onboarding-copy, .success-booked-copy { font-size: 16px; }
   .success-plan-card { grid-template-columns: 1fr 1fr; width: 100%; }
-  .success-next-divider { margin-top: 100px; }
-  .onboarding-section { margin-top: 70px; }
+  .success-next-divider { margin-top: 40px; }
+  .onboarding-section { margin-top: 40px; }
   .onboarding-kicker { height: 38px; padding: 7px 18px; font-size: 13px; }
   .onboarding-card { padding: 26px; }
   .onboarding-submit { height: 58px; margin-top: 22px; font-size: 20px; }
