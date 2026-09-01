@@ -13,6 +13,8 @@ function getStripe() {
   return stripePromise;
 }
 
+const figmaCheckIcon = "https://www.figma.com/api/mcp/asset/0ffbf45b-f830-44a0-99da-1bf49d46c614.svg";
+
 export default function CheckoutClient({ plan }: { plan: Plan }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,10 +27,18 @@ export default function CheckoutClient({ plan }: { plan: Plan }) {
   const setupFee = 0;
   const total = subtotal + setupFee;
 
+  const featureList = [
+    "Management of up to 4 platforms",
+    "20–24 custom posts monthly",
+    "8–12 edited reels/videos",
+    "Custom graphics/flyers",
+    "Monthly content calendar",
+  ];
+
   async function handleContinue() {
     setError("");
     if (!fullName.trim() || fullName.trim().length < 2) { setError("Full name is required."); return; }
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError("Valid email is required."); return; }
+    if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) { setError("Valid email is required."); return; }
     if (!phone.trim()) { setError("Phone number is required."); return; }
     setLoading(true);
     try {
@@ -40,18 +50,10 @@ export default function CheckoutClient({ plan }: { plan: Plan }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Checkout failed");
       if (data.url) {
-        // If Stripe is configured, redirect to Checkout. In mock mode, data.url is our success page.
-        // For mock, also try Stripe.js redirect if publishable key present and url looks like Stripe
-        if (data.mock) {
+        if (data.mock || data.url.startsWith("http")) {
           window.location.href = data.url;
           return;
         }
-        // If Stripe Checkout URL, just redirect
-        if (data.url.startsWith("http")) {
-          window.location.href = data.url;
-          return;
-        }
-        // fallback: try Stripe.js
         const stripe = await getStripe();
         if (stripe && data.sessionId) {
           const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
@@ -69,60 +71,70 @@ export default function CheckoutClient({ plan }: { plan: Plan }) {
   }
 
   return (
-    <div className="checkout-layout">
-      {/* Left — Your Details */}
-      <section className="checkout-card">
-        <h2 className="checkout-card-title">Your Details</h2>
-        <label className="field">
-          <span>FULL NAME *</span>
-          <input value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Adaeze Okonkwo" maxLength={80} />
-        </label>
-        <label className="field">
-          <span>EMAIL ADDRESS *</span>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="adaeze@brand.com" maxLength={254} />
-        </label>
-        <label className="field">
-          <span>PHONE NUMBER *</span>
-          <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 (555) 000-0000" maxLength={20} />
-        </label>
-        <label className="field">
-          <span>BUSINESS NAME (OPTIONAL)</span>
-          <input value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="Your Brand Co." maxLength={80} />
-        </label>
-        <button className="checkout-cta" onClick={handleContinue} disabled={loading}>
-          {loading ? "Redirecting…" : "Continue to payment"}
-        </button>
-        {error && <div style={{ marginTop: 12, padding: "10px 12px", borderRadius: 10, background: "#fdf0f0", color: "#7a1a1a", border: "1px solid #e7b7b7", fontSize: 13 }}>{error}</div>}
-      </section>
-
-      {/* Right — Order Summary */}
-      <aside className="checkout-card order-summary">
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-          <h2 className="checkout-card-title" style={{ marginBottom: 0 }}>Order Summary</h2>
-          <div style={{ textAlign: "right", fontFamily: "var(--font-fractul)", fontWeight: 600, color: "#0c200e", fontSize: "clamp(20px,2.2vw,28px)", lineHeight: 1 }}>
-            {formatUSD(plan.priceCents)}<span style={{ fontSize: 11, fontWeight: 500, color: "#1a3d1a", letterSpacing: ".04em" }}>/month</span>
+    <div className="checkout-flow-grid">
+      <section className="checkout-card checkout-details-card">
+        <div>
+          <h2 className="checkout-card-title">Your Details</h2>
+          <div className="checkout-details-fields" style={{ marginTop: 32 }}>
+            <label className="field">
+              <span>FULL NAME *</span>
+              <input value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Adaeze Okonkwo" maxLength={80} />
+            </label>
+            <label className="field">
+              <span>EMAIL ADDRESS *</span>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="adaeze@company.com" maxLength={254} />
+            </label>
+            <label className="field">
+              <span>PHONE NUMBER *</span>
+              <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+234 801 234 5678" maxLength={20} />
+            </label>
+            <label className="field">
+              <span>BUSINESS NAME (OPTIONAL)</span>
+              <input value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="Your Brand Co." maxLength={80} />
+            </label>
           </div>
         </div>
-        <div style={{ display: "inline-flex", margin: "8px 0 14px", padding: "4px 12px", borderRadius: 999, border: "1px solid #dfe8df", fontSize: 11, fontWeight: 600, letterSpacing: ".06em", textTransform: "uppercase", color: "#1a3d1a", background: "#f4f7f3" }}>
-          {plan.name}
+
+        <div>
+          <button className="checkout-pay-button" onClick={handleContinue} disabled={loading}>
+            {loading ? "Redirecting…" : "Continue to payment"}
+          </button>
+          {error && <div className="checkout-error">{error}</div>}
         </div>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#555", marginBottom: 6 }}>Social Media Management</div>
-        <ul style={{ margin: "0 0 14px 16px", padding: 0, fontSize: 13, lineHeight: 1.6, color: "#333" }}>
-          <li>Management of up to 4 platforms</li>
-          <li>20–24 custom posts monthly</li>
-          <li>8–12 edited reels/videos</li>
-          <li>Custom graphics/flyers</li>
-          <li>Monthly content calendar</li>
-          <li style={{ color: "#777" }}>+ 3 more features</li>
-        </ul>
-        <div style={{ height: 1, background: "#eef1ee", margin: "14px 0" }} />
-        <div className="order-row"><span>Subtotal</span><strong>{formatUSD(subtotal)}</strong></div>
-        <div className="order-row"><span>Setup Fee</span><strong>{setupFee === 0 ? "$0" : formatUSD(setupFee)}</strong></div>
-        <div style={{ height: 1, background: "#1a3d1a", margin: "10px 0" }} />
-        <div className="order-row total"><span>Total</span><strong>{formatUSD(total)}</strong></div>
-        <div style={{ marginTop: 12, padding: "10px 12px", borderRadius: 10, background: "#f0faf0", color: "#1a3d1a", fontSize: 11, lineHeight: 1.5, border: "1px solid #dff0df" }}>
-          Cancel anytime. No hidden fees. First month billed on subscription start.
+      </section>
+
+      <aside className="checkout-card checkout-summary-card">
+        <div className="checkout-summary-top">
+          <div className="checkout-summary-title-wrap">
+            <h2 className="checkout-card-title">Order Summary</h2>
+            <span className="checkout-summary-plan">{plan.name}</span>
+            <div className="checkout-summary-service">Social Media Management</div>
+          </div>
+          <div className="checkout-summary-price-wrap">
+            <span className="checkout-summary-price">{formatUSD(plan.priceCents)}</span>
+            <span className="checkout-summary-month">/month</span>
+          </div>
         </div>
+
+        <div className="checkout-feature-box">
+          <ul className="checkout-feature-list">
+            {featureList.map((feature) => (
+              <li key={feature}>
+                <img className="checkout-feature-icon" src={figmaCheckIcon} alt="" aria-hidden="true" />
+                <span>{feature}</span>
+              </li>
+            ))}
+            <li><span className="checkout-more-features">+ 3 more features</span></li>
+          </ul>
+        </div>
+
+        <div className="checkout-costs">
+          <div className="checkout-cost-row"><span>Subtotal</span><strong>{formatUSD(subtotal)}</strong></div>
+          <div className="checkout-cost-row"><span>Setup Fee</span><strong style={{ color: "#5cb85c" }}>{setupFee === 0 ? "$0" : formatUSD(setupFee)}</strong></div>
+          <div className="checkout-total"><span>Total</span><strong>{formatUSD(total)}</strong></div>
+        </div>
+
+        <div className="checkout-trust-note">Cancel anytime. No hidden fees. First month billed on subscription start.</div>
       </aside>
     </div>
   );
