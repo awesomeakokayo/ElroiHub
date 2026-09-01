@@ -19,43 +19,33 @@ export default async function OnboardingConfirmedPage({
   return (
     <main className="inner-page checkout-success-page">
       <SiteHeader />
-      <div style={{ maxWidth: 760, margin: "0 auto", width: "100%", textAlign: "center", paddingTop: 8 }}>
-        <div style={{ width: 56, height: 56, borderRadius: 16, background: "#1a3d1a", display: "grid", placeItems: "center", margin: "0 auto 12px", border: "2px solid rgba(255,255,255,0.12)" }}>
-          <span style={{ width: 28, height: 28, borderRadius: 999, background: "#affc9e", display: "grid", placeItems: "center", color: "#1a3d1a", fontWeight: 800 }}>✓</span>
-        </div>
-        <div style={{ display: "inline-flex", padding: "6px 14px", borderRadius: 999, background: "#affc9e", color: "#1a3d1a", fontSize: 11, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase" }}>Payment Confirmed</div>
-        <h1 className="section-title" style={{ fontSize: "clamp(28px,4vw,44px)", textAlign: "center", marginTop: 12, color: "#fff" }}>
-          Welcome to <span className="gold">El Roi Hub</span>
-        </h1>
-        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 14, marginTop: 8 }}>Your Growth Plan is now active. Our team will reach out within 24 hours.</p>
+      <div className="success-page">
+        <img className="success-payment-mark" src="https://www.figma.com/api/mcp/asset/494cd464-1eaf-4831-aa5f-1ffa3f2673f6.png" alt="" aria-hidden="true" />
+        <div className="success-status-pill">Payment Confirmed</div>
+        <h1>Welcome to <span className="gold">El Roi Hub</span></h1>
+        <p className="success-lead">Your Growth Plan is now active. Our team will reach out within 24 hours to get your onboarding started.</p>
 
-        <div style={{ height: 1, background: "rgba(255,255,255,0.1)", margin: "20px 0" }} />
+        <div className="success-next-divider" style={{ marginTop: 90 }}><span>What&apos;s Next</span></div>
 
-        <div style={{ width: 48, height: 48, borderRadius: 999, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", display: "grid", placeItems: "center", margin: "0 auto 10px" }}>
-          <span style={{ width: 28, height: 28, borderRadius: 999, background: "#fff", display: "grid", placeItems: "center", fontSize: 14 }}>▦</span>
-        </div>
-        <h2 className="section-title" style={{ fontSize: "clamp(28px,4vw,38px)", textAlign: "center", color: "#fff" }}>Call Booked!</h2>
-        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 13, marginTop: 6 }}>
-          Your onboarding call is confirmed for {displayDate} at {displayTime}.<br />
-          {email ? `A calendar invite has been sent to ${email}.` : "A calendar invite has been sent to your email."}
-        </p>
-
-        <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: 16, marginTop: 18, textAlign: "left" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>DATE & TIME</span><strong>{displayDate} • {displayTime}</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>DURATION</span><strong>30 minutes</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>FORMAT</span><strong>Video Call (Google Meet link to be sent)</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>TIMEZONE</span><strong>West Africa Time (WAT, UTC+1)</strong></div>
-          <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.9)", padding: "8px 0" }}><span style={{ opacity: 0.6 }}>HOST</span><strong>ElRoi Hub Account Manager</strong></div>
-        </div>
-
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 22, flexWrap: "wrap" }}>
-          <Link href="/" className="btn btn-outline" style={{ minWidth: 160, height: 44, borderColor: "rgba(255,255,255,0.4)", fontSize: 14 }}>Back to Home</Link>
-          {calendarUrl ? (
-            <a href={calendarUrl} target="_blank" rel="noreferrer" className="btn btn-gold" style={{ minWidth: 200, height: 44, fontSize: 14, background: "#ffae00", color: "#1d1d1d" }}>Add to Google Calendar</a>
-          ) : (
-            <Link href="/onboarding" className="btn btn-gold" style={{ minWidth: 200, height: 44, fontSize: 14, background: "#ffae00", color: "#1d1d1d" }}>Add to Google Calendar</Link>
-          )}
-        </div>
+        <section className="success-booked">
+          <img className="success-calendar-icon" src="https://www.figma.com/api/mcp/asset/04f49ee8-242f-453e-8170-6dadd11de17f.svg" alt="" aria-hidden="true" />
+          <h2>Call Booked!</h2>
+          <p className="success-booked-copy">
+            Your onboarding call is confirmed for {displayDate} at {time ? displayTime.replace(" WAT", "") : "9:00 AM"}.<br />
+            {email ? `A calendar invite has been sent to ${email}.` : "A calendar invite has been sent to your email."}
+          </p>
+          <div className="success-booked-details">
+            <div className="success-detail-row"><span className="success-detail-label">Date &amp; Time</span><strong className="success-detail-value">{displayDate} · {displayTime}</strong></div>
+            <div className="success-detail-row"><span className="success-detail-label">Duration</span><strong className="success-detail-value">30 minutes</strong></div>
+            <div className="success-detail-row"><span className="success-detail-label">Format</span><strong className="success-detail-value">Video Call (Google Meet link will be sent)</strong></div>
+            <div className="success-detail-row"><span className="success-detail-label">Timezone</span><strong className="success-detail-value">West Africa Time (WAT / UTC+1)</strong></div>
+            <div className="success-detail-row"><span className="success-detail-label">Host</span><strong className="success-detail-value">DDFCG HUB Account Manager</strong></div>
+          </div>
+          <div className="success-actions">
+            <Link href="/" className="success-home-btn">Back to Home</Link>
+            {calendarUrl && <a className="success-calendar-btn" href={calendarUrl} target="_blank" rel="noreferrer noopener">Add to Google Calendar</a>}
+          </div>
+        </section>
       </div>
       <Footer />
     </main>
