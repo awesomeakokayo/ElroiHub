@@ -2,50 +2,123 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
+import { findPlanByName } from "@/lib/plans";
 
-export const metadata: Metadata = { title: "Call Booked" };
+export const metadata: Metadata = {
+  title: "Call Booked",
+  description: "Your ElRoi Hub onboarding call is confirmed.",
+};
+
+function formatDisplay(iso: string): string {
+  if (!iso) return "";
+  try {
+    return new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "Africa/Lagos",
+    });
+  } catch { return iso; }
+}
 
 export default async function OnboardingConfirmedPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string; time?: string; calendarUrl?: string; email?: string }>;
+  searchParams: Promise<{ plan?: string; date?: string; time?: string; email?: string; calendarUrl?: string }>;
 }) {
-  const { date, time, calendarUrl, email } = await searchParams;
-  const displayDate = date
-    ? new Date(`${date}T12:00:00`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "Africa/Lagos" })
-    : "—";
-  const displayTime = time ? `${time} WAT` : "09:00 WAT";
+  const params = await searchParams;
+  const planName = params?.plan || "Growth";
+  const plan = findPlanByName(planName) || findPlanByName("Growth")!;
+  const displayPrice = plan.price.startsWith("$") ? plan.price : `$${plan.price}`;
+  const nextBilling = new Date();
+  nextBilling.setDate(nextBilling.getDate() + 30);
+  const nextBillingStr = nextBilling.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+  const date = params?.date || new Date().toISOString().slice(0, 10);
+  const time = params?.time || "09:00";
+  const email = params?.email || "elroihub@gmail.com";
+  const calendarUrl = params?.calendarUrl || "";
+
+  // Fallback calendar URL if not provided: generate Google Calendar link
+  const fallbackCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`ElRoi Hub Onboarding - ${plan.name}`)}&dates=${date.replace(/-/g, "")}T${time.replace(":", "")}00Z/${date.replace(/-/g, "")}T${String(parseInt(time.split(":")[0], 10) + 1).padStart(2, "0")}${time.split(":")[1]}00Z&details=${encodeURIComponent(`Onboarding call for ${plan.name} plan`)}&ctz=Africa/Lagos`;
+
+  const calUrl = calendarUrl || fallbackCalendarUrl;
 
   return (
-    <main className="inner-page checkout-success-page">
+    <main className="checkout-success-page">
       <SiteHeader />
-      <div className="success-page">
-        <img className="success-payment-mark" src="https://www.figma.com/api/mcp/asset/494cd464-1eaf-4831-aa5f-1ffa3f2673f6.png" alt="" aria-hidden="true" />
-        <div className="success-status-pill">Payment Confirmed</div>
-        <h1>Welcome to <span className="gold">El Roi Hub</span></h1>
-        <p className="success-lead">Your Growth Plan is now active. Our team will reach out within 24 hours to get your onboarding started.</p>
+      <div>
+        {/* Top - Payment Confirmed */}
+        <div className="success-page">
+          <img src="/assets/icon-badge.svg" alt="" className="success-payment-mark" aria-hidden="true" />
+          <div className="success-status-pill">Payment Confirmed</div>
+          <h1>
+            Welcome to <span className="gold">El Roi Hub</span>
+          </h1>
+          <p className="success-lead">Your {plan.name} Plan is now active. Our team will reach out within 24 hours to get your onboarding started.</p>
 
-        <div className="success-next-divider" style={{ marginTop: 90 }}><span>What&apos;s Next</span></div>
+          <div className="success-plan-card">
+            <div>
+              <div className="success-plan-label">Plan</div>
+              <div className="success-plan-value">{plan.name}</div>
+            </div>
+            <div>
+              <div className="success-plan-label">Amount</div>
+              <div className="success-plan-value">{displayPrice}/mo</div>
+            </div>
+            <div>
+              <div className="success-plan-label">Status</div>
+              <div className="success-plan-value active">✓ Active</div>
+            </div>
+            <div>
+              <div className="success-plan-label">Next Billing</div>
+              <div className="success-plan-value">{nextBillingStr}</div>
+            </div>
+          </div>
+        </div>
 
-        <section className="success-booked">
-          <img className="success-calendar-icon" src="https://www.figma.com/api/mcp/asset/04f49ee8-242f-453e-8170-6dadd11de17f.svg" alt="" aria-hidden="true" />
+        <div className="success-next-divider">
+          <span>What&apos;s Next</span>
+        </div>
+
+        {/* Call Booked */}
+        <div className="success-booked">
+          <img src="/assets/icon-badge.svg" alt="" className="success-calendar-icon" aria-hidden="true" />
           <h2>Call Booked!</h2>
           <p className="success-booked-copy">
-            Your onboarding call is confirmed for {displayDate} at {time ? displayTime.replace(" WAT", "") : "9:00 AM"}.<br />
-            {email ? `A calendar invite has been sent to ${email}.` : "A calendar invite has been sent to your email."}
+            Your onboarding call is confirmed for {formatDisplay(date)} at {time} WAT.
+            <br />A calendar invite has been sent to {email}.
           </p>
+
           <div className="success-booked-details">
-            <div className="success-detail-row"><span className="success-detail-label">Date &amp; Time</span><strong className="success-detail-value">{displayDate} · {displayTime}</strong></div>
-            <div className="success-detail-row"><span className="success-detail-label">Duration</span><strong className="success-detail-value">30 minutes</strong></div>
-            <div className="success-detail-row"><span className="success-detail-label">Format</span><strong className="success-detail-value">Video Call (Google Meet link will be sent)</strong></div>
-            <div className="success-detail-row"><span className="success-detail-label">Timezone</span><strong className="success-detail-value">West Africa Time (WAT / UTC+1)</strong></div>
-            <div className="success-detail-row"><span className="success-detail-label">Host</span><strong className="success-detail-value">DDFCG HUB Account Manager</strong></div>
+            <div className="success-detail-row">
+              <span className="success-detail-label">Date &amp; Time</span>
+              <span className="success-detail-value">{formatDisplay(date)} at {time} WAT</span>
+            </div>
+            <div className="success-detail-row">
+              <span className="success-detail-label">Duration</span>
+              <span className="success-detail-value">30 minutes</span>
+            </div>
+            <div className="success-detail-row">
+              <span className="success-detail-label">Format</span>
+              <span className="success-detail-value">Video Call (Google Meet link to be sent)</span>
+            </div>
+            <div className="success-detail-row">
+              <span className="success-detail-label">Timezone</span>
+              <span className="success-detail-value">West Africa Time (WAT, UTC+1)</span>
+            </div>
+            <div className="success-detail-row">
+              <span className="success-detail-label">Host</span>
+              <span className="success-detail-value">ElRoi Hub Onboarding Manager</span>
+            </div>
           </div>
+
           <div className="success-actions">
             <Link href="/" className="success-home-btn">Back to Home</Link>
-            {calendarUrl && <a className="success-calendar-btn" href={calendarUrl} target="_blank" rel="noreferrer noopener">Add to Google Calendar</a>}
+            <a href={calUrl} target="_blank" rel="noreferrer noopener" className="success-calendar-btn">Add to Google Calendar</a>
           </div>
-        </section>
+        </div>
       </div>
       <Footer />
     </main>

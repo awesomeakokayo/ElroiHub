@@ -2,49 +2,35 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
-import CheckoutClient from "@/components/CheckoutClient";
-import { getPlan } from "@/lib/pricing";
+import CheckoutClient from "./CheckoutClient";
+import { findPlanByName } from "@/lib/plans";
 
 export const metadata: Metadata = {
   title: "Complete Your Purchase",
-  description: "Complete your ElRoi Hub plan purchase — secure checkout in USD via Stripe.",
+  description: "Complete your ElRoi Hub purchase and activate your plan.",
 };
 
 export default async function CheckoutPage({
   searchParams,
 }: {
-  searchParams: Promise<{ plan?: string; cancelled?: string }>;
+  searchParams: Promise<{ plan?: string }>;
 }) {
-  const { plan: planQuery, cancelled } = await searchParams;
-  const plan = planQuery ? getPlan(planQuery) : undefined;
+  const params = await searchParams;
+  const planParam = params?.plan || "";
+  const plan = findPlanByName(planParam) || findPlanByName("Growth") || findPlanByName("AI Growth")!;
 
   return (
-    <main className="inner-page checkout-page">
+    <main className="checkout-page">
       <SiteHeader />
       <div>
         <Link href="/pricing" className="checkout-back">
-          <img className="checkout-back-icon" src="https://www.figma.com/api/mcp/asset/e5f4df0f-a553-4d9b-9126-bf5441e59554.svg" alt="" aria-hidden="true" />
-          <span>Back to Pricing</span>
+          <span className="checkout-back-icon" aria-hidden="true">‹</span> Back to Pricing
         </Link>
-
         <h1>
           Complete Your <span className="gold">Purchase</span>
         </h1>
         <div className="checkout-divider" />
-
-        {cancelled && <div className="checkout-cancelled">Payment cancelled. You can try again.</div>}
-
-        {!plan ? (
-          <div className="checkout-card" style={{ padding: 28 }}>
-            <p style={{ margin: 0, fontWeight: 600 }}>No plan selected.</p>
-            <p style={{ margin: "8px 0 16px", color: "#555" }}>Choose a plan from pricing to continue.</p>
-            <Link href="/pricing" className="btn btn-gold" style={{ display: "inline-flex", width: "auto", minWidth: 0, padding: "0 24px" }}>
-              Go to Pricing
-            </Link>
-          </div>
-        ) : (
-          <CheckoutClient plan={plan} />
-        )}
+        <CheckoutClient plan={plan} />
       </div>
       <Footer />
     </main>
