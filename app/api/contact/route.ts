@@ -45,7 +45,7 @@ export async function POST(request: Request) {
   if (!message || message.length < 10) return NextResponse.json({ error: "Message is too short. Please provide at least 10 characters." }, { status: 400 });
 
   return sendEmail({
-    to: process.env.NOTIFICATION_EMAIL,
+    to: process.env.NOTIFICATION_EMAIL || "Elroihub2502@gmail.com",
     from: process.env.EMAIL_FROM,
     replyTo: email,
     subject: `${subject} — ${name}`,
@@ -56,10 +56,7 @@ export async function POST(request: Request) {
 async function sendEmail({ to, from, replyTo, subject, text }: { to?: string; from?: string; replyTo: string; subject: string; text: string }) {
   if (!to || !from) return NextResponse.json({ error: "Email delivery is not configured yet. Add NOTIFICATION_EMAIL and EMAIL_FROM in Vercel/local environment variables." }, { status: 503 });
   if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: "Email delivery is not configured yet. Add RESEND_API_KEY in your environment variables." }, { status: 503 });
-  if (!from.includes("<") || !from.includes(">")) {
-    // Basic check: must be "Name <email@domain>"
-    return NextResponse.json({ error: "EMAIL_FROM must be in format 'Name <email@verified-domain.com>'." }, { status: 503 });
-  }
+  if (!from.includes("<") || !from.includes(">")) return NextResponse.json({ error: "EMAIL_FROM must be in format 'Name <email@verified-domain.com>'." }, { status: 503 });
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
