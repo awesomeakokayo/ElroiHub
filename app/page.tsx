@@ -167,6 +167,8 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section faq-ghost-section" aria-hidden="true" />
+
         <section className="section dark faq section-pad">
           <div className="ghost" aria-hidden="true">FAQ</div>
           <div className="content">
