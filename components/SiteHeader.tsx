@@ -67,8 +67,9 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
     };
   }, [open]);
 
-  // Effective overlay: translucent only at top over dark hero; after scroll, solid for visibility on white sections
-  const effectiveOverlay = overlay && !scrolled && !open;
+  // On homepage: always keep dark overlay (white logo needs dark bg).
+  // On inner pages: no overlay, light header.
+  const effectiveOverlay = overlay && !open;
 
   return (
     <>
