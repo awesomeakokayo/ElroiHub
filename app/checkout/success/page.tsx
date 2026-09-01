@@ -28,7 +28,7 @@ export default async function CheckoutSuccessPage({
       isPaid = session.payment_status === "paid" || session.status === "complete";
       if (session.customer_details?.email) sessionEmail = session.customer_details.email;
       else if (session.customer_email) sessionEmail = session.customer_email;
-      if (session.amount_total) amountLabel = new Intl.NumberFormat("en-NG", { style: "currency", currency: (session.currency || "usd").toUpperCase(), maximumFractionDigits: 0 }).format((session.amount_total as number) / 100);
+      if (session.amount_total) amountLabel = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format((session.amount_total as number) / 100);
       const metaPlan = (session.metadata as any)?.plan;
       if (!plan && metaPlan) plan = getPlan(metaPlan);
     } catch (e) {
@@ -64,7 +64,7 @@ export default async function CheckoutSuccessPage({
 
         <div className="success-next-divider"><span>What&apos;s Next</span></div>
 
-        <SuccessBookingWrapper planName={planName} email={sessionEmail} sessionId={session_id} />
+        <SuccessBookingWrapper planName={planName} email={sessionEmail} sessionId={session_id} amountLabel={amountLabel || (plan ? formatUSD(plan.priceCents) : undefined)} />
       </div>
       <Footer />
     </main>

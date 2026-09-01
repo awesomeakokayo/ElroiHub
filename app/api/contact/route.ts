@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendContactToElroi } from "@/lib/gmail";
 
 // Simple in-memory rate limit: 5 requests per minute per IP
 const contactRate = new Map<string, { count: number; reset: number }>();
@@ -44,40 +45,17 @@ export async function POST(request: Request) {
   if (!email || !EMAIL_RE.test(email)) return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
   if (!message || message.length < 10) return NextResponse.json({ error: "Message is too short. Please provide at least 10 characters." }, { status: 400 });
 
-  return sendEmail({
-    to: process.env.NOTIFICATION_EMAIL || "Elroihub2502@gmail.com",
-    from: process.env.EMAIL_FROM,
-    replyTo: email,
-    subject: `${subject} — ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "—"}\nService: ${service || "—"}\n\n${message}`,
-  });
-}
-
-async function sendEmail({ to, from, replyTo, subject, text }: { to?: string; from?: string; replyTo: string; subject: string; text: string }) {
-  if (!to || !from) return NextResponse.json({ error: "Email delivery is not configured yet. Add NOTIFICATION_EMAIL and EMAIL_FROM in Vercel/local environment variables." }, { status: 503 });
-  if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: "Email delivery is not configured yet. Add RESEND_API_KEY in your environment variables." }, { status: 503 });
-  if (!from.includes("<") || !from.includes(">")) return NextResponse.json({ error: "EMAIL_FROM must be in format 'Name <email@verified-domain.com>'." }, { status: 503 });
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  // Direct Gmail (Option A) — from Elroihub2502@gmail.com to Elroihub2502@gmail.com, Reply-To visitor
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, reply_to: replyTo, subject, text }),
-      signal: controller.signal,
-    });
-    if (!response.ok) {
-      const body = await response.text().catch(() => "");
-      console.error("Resend contact error", response.status, body.slice(0, 500));
-      return NextResponse.json({ error: "We received the form, but email delivery failed. Check the Resend configuration." }, { status: 502 });
-    }
+    await sendContactToElroi({ name, email, phone, service, subject, message });
     return NextResponse.json({ ok: true });
   } catch (err) {
-    const isAbort = err instanceof Error && err.name === "AbortError";
-    console.error("Resend contact fetch failed", err);
-    return NextResponse.json({ error: isAbort ? "Email service timed out. Please try again." : "Unable to send email at this time." }, { status: 502 });
-  } finally {
-    clearTimeout(timeout);
+    console.error("[contact] Gmail send failed", err);
+    const msg = err instanceof Error ? err.message : "Unable to send email at this time.";
+    // If OAuth not configured, surface setup hint
+    if (msg.includes("Gmail OAuth not configured")) {
+      return NextResponse.json({ error: "Email delivery not configured yet. Add GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / GMAIL_REFRESH_TOKEN (see .env.example)." }, { status: 503 });
+    }
+    return NextResponse.json({ error: "We received the form, but Gmail delivery failed. Please try again." }, { status: 502 });
   }
 }
