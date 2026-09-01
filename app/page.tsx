@@ -146,7 +146,7 @@ export default function Home() {
         </section>
 
         <section className="section team-ghost-section" aria-hidden="true">
-          <div className="ghost team-ghost-text">OUR TEAM</div>
+          <div className="team-ghost-text">OUR TEAM</div>
         </section>
 
         <section className="section dark section-pad team" id="team">
@@ -165,6 +165,10 @@ export default function Home() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="section faq-ghost-section" aria-hidden="true">
+          <div className="faq-ghost-text">FAQ</div>
         </section>
 
         <section className="section dark faq section-pad">
