@@ -53,6 +53,13 @@ export default function PricingView() {
     }
   };
 
+  const descriptions: Record<keyof typeof data, string> = {
+    ai: "Automate processes, integrate AI tools, and build custom AI workflows for your business.",
+    graphics: "Professional graphic design, brand identity, and social media content that captures attention.",
+    web: "Custom websites, e-commerce platforms, and web applications built for performance and growth.",
+    combo: "Bundle AI + Graphic Design + Web Development and save up to 15% with our limited-time combo packages.",
+  };
+
   return (
     <div>
       <div className="pricing-tabs" role="tablist" aria-label="Services pricing" onKeyDown={onKeyDown}>
@@ -74,7 +81,7 @@ export default function PricingView() {
       </div>
 
       <p className="pricing-description" id="pricing-desc">
-        Automate processes, integrate AI tools, and build custom AI workflows for your business.
+        {descriptions[tab]}
       </p>
 
       {tab === "combo" && (

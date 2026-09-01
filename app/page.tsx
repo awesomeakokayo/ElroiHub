@@ -173,11 +173,15 @@ export default function Home() {
         </section>
 
         <section className="cta" aria-label="Call to action">
-          <img src={cta} alt="" loading="lazy" decoding="async" />
           <div className="cta-content">
-            <h2>Ready to Build <span className="gold">Influence</span> That <span className="gold">Lasts?</span></h2>
-            <p className="cta-subtitle">Let&apos;s turn your brand&apos;s vision into market dominance.</p>
-            <Link href="/schedule" className="btn btn-gold">Book a Free Strategy Call</Link>
+            <div className="cta-img-wrap">
+              <img src={cta} alt="Elroi Hub creative workspace" loading="lazy" decoding="async" />
+            </div>
+            <div className="cta-text">
+              <h2>Ready to Build <span className="gold">Influence</span> That <span className="gold">Lasts?</span></h2>
+              <p className="cta-subtitle">Let&apos;s turn your brand&apos;s vision into market dominance.</p>
+              <Link href="/schedule" className="btn btn-gold">Book a Free Strategy Call</Link>
+            </div>
           </div>
         </section>
       </main>

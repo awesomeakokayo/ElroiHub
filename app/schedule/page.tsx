@@ -1,6 +1,13 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import ScheduleForm from "@/components/ScheduleForm";
+import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Schedule a Call",
+  description: "Book a free 30-minute strategy call with Elroi Hub to align on your brand goals and growth plan.",
+};
 
 export default function SchedulePage() {
   return (
@@ -18,6 +25,7 @@ export default function SchedulePage() {
       <Suspense fallback={<div className="form-panel">Loading scheduler…</div>}>
         <ScheduleForm />
       </Suspense>
+      <Footer />
     </main>
   );
 }

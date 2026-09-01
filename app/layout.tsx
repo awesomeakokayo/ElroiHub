@@ -1,6 +1,4 @@
 import "./globals.css";
-import "./precision.css";
-import "./ui-fixes.css";
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
@@ -27,7 +25,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0c200e",
-  colorScheme: "light",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

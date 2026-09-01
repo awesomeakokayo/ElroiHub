@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import ContactForm from "@/components/ContactForm";
+import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with Elroi Hub for questions, quotes, or partnership inquiries. We reply within 24 hours.",
+};
 
 const socials = [
   ["Instagram", "@elroihub", "https://www.instagram.com/elroihub", "/assets/social-instagram.svg"],
@@ -66,6 +73,7 @@ export default function ContactPage() {
           </section>
         </aside>
       </div>
+      <Footer />
     </main>
   );
 }
