@@ -114,7 +114,7 @@ export default function PricingView() {
               </div>
             </div>
             <p className={isCombo ? "combo-desc" : undefined}>{desc}</p>
-            <Link href={`/schedule?package=${encodeURIComponent(name)}`} className="price-btn" aria-label={`Get started with ${name}`}>
+            <Link href={`/checkout?plan=${encodeURIComponent(name)}`} className="price-btn" aria-label={`Get started with ${name}`}>
               Get Started
             </Link>
           </article>
