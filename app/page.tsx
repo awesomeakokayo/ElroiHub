@@ -33,7 +33,7 @@ const why = [
 const team = [
   [
     "CEO — Kingdavid",
-    "/assets/team-ceo.png", // figma d9f78600...
+    "/image.png", // updated — user-provided new CEO photo from public/image.png
     "“At Elroi Hub, we combine creativity, technology, and AI to help businesses grow, operate smarter, and achieve measurable results. Our goal is simple: build solutions that create real value and lasting impact.”",
   ],
   [
