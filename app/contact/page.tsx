@@ -27,7 +27,7 @@ export default function ContactPage() {
     <main className="inner-page contact-page">
       <SiteHeader />
       <div className="inner-head">
-        <h1 className="section-title">Let's Build <span className="gold">Something Great</span></h1>
+        <h1 className="section-title">Let&apos;s Build <span className="gold">Something Great</span></h1>
         <p className="inner-copy">
           Whether you have a question, need a quote, or just want to say hi, our team is ready to help you grow your digital presence.
         </p>
@@ -41,7 +41,7 @@ export default function ContactPage() {
             <h3>Contact Info</h3>
             <div className="info-row">
               <div className="info-icon"><img src={contactIcons.email} alt="" /></div>
-              <div><strong>hello@elroihub.com</strong><small>We reply within 24 hours</small></div>
+              <div><strong>Elroihub2502@gmail.com</strong><small>We reply within 24 hours</small></div>
             </div>
             <div className="info-row">
               <div className="info-icon"><img src={contactIcons.phone} alt="" /></div>
