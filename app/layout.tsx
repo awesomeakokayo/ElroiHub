@@ -1,4 +1,7 @@
 import "./globals.css";
+import "./fractul.css";
+import "./figma-flow.css";
+import "./figma-flow-hotfix.css";
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {

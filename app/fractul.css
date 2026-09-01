@@ -1,0 +1,33 @@
+/* El Roi Hub — Figma typography sync
+ * Figma source of truth: Fractul family.
+ * Figma uses 600 SemiBold, 700 Bold, and 900 Black at the locations overridden below.
+ * The licensed Fractul webfont should be supplied by the project owner/host when needed;
+ * the family name is intentionally kept exact here so an available Fractul face is used.
+ */
+
+/* Fractul — uses --font-fractul so Space Grotesk fallback is automatic */
+.section-title,
+.hero h1,
+.ghost,
+.team-ghost-text,
+.faq-ghost-text,
+.process-card h3,
+.process-scale h3,
+.cta h2,
+.pricing-tabs button,
+.member-name {
+  font-family: var(--font-fractul);
+  font-weight: 600;
+}
+
+/* Fractul Bold — scheduling/form panel headings */
+.panel-title {
+  font-family: var(--font-fractul);
+  font-weight: 700;
+}
+
+/* Fractul Black — pricing values */
+.price {
+  font-family: var(--font-fractul);
+  font-weight: 900;
+}
