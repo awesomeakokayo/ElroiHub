@@ -3,34 +3,43 @@
 
 .checkout-page,
 .checkout-success-page {
-  min-height: 2227px;
-  padding: 258px 8.33% 160px;
+  min-height: auto;
+  padding: 168px 5% 80px;
   background: linear-gradient(118.492deg,#000 27.873%,#0c200e 74.131%,#246129 215.05%);
   color: #fff;
+  overflow-x: hidden;
 }
 
 .checkout-page > div,
 .checkout-success-page > div {
-  max-width: 1457px !important;
+  max-width: 1280px !important;
   margin: 0 auto !important;
   width: 100% !important;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .checkout-back {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   color: #fff;
   font-family: 'Poppins', sans-serif;
   font-size: 26px;
-  line-height: normal;
+  line-height: 1;
   margin: 0 0 57px;
 }
 
 .checkout-back-icon {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  flex: 0 0 auto;
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-1px);
 }
 
 .checkout-page h1 {
@@ -51,9 +60,12 @@
 
 .checkout-flow-grid {
   display: grid;
-  grid-template-columns: 783px minmax(0, 1fr);
-  gap: 0;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 24px;
   align-items: start;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .checkout-card {
@@ -64,18 +76,23 @@
 }
 
 .checkout-details-card {
-  width: 783px;
-  min-height: 830px;
-  padding: 84px 48px;
+  width: 100%;
+  max-width: 100%;
+  min-height: auto;
+  padding: 36px 28px;
   display: flex;
   flex-direction: column;
-  gap: 109px;
+  gap: 32px;
+  box-sizing: border-box;
 }
 
 .checkout-summary-card {
   width: 100%;
-  min-height: 764px;
-  padding: 84px 48px;
+  max-width: 100%;
+  min-height: auto;
+  padding: 32px 24px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .checkout-card-title {
