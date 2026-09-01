@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendBookingToElroi, sendViaGmail } from "@/lib/gmail";
 
 const WAT_OFFSET = "+0100";
 const MONTH_MAP: Record<string, string> = { Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12" };
@@ -92,61 +93,46 @@ export async function POST(request: Request) {
     ? new Date(`${dateRaw}T12:00:00`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "Africa/Lagos" })
     : dateRaw;
 
-  const to = process.env.NOTIFICATION_EMAIL;
-  const from = process.env.EMAIL_FROM;
-  if (!to || !from || !process.env.RESEND_API_KEY) return NextResponse.json({ error: "Email delivery is not configured yet. Add RESEND_API_KEY, EMAIL_FROM, and NOTIFICATION_EMAIL." }, { status: 503 });
+  // Single-thread: if this booking came from a paid checkout, include payment meta in the same mail
+  const paymentPlan = String(form.get("plan") || pkg || "").trim().slice(0, 80);
+  const paymentSessionId = String(form.get("session_id") || form.get("sessionId") || "").trim().slice(0, 120);
+  const paymentAmount = String(form.get("amount") || form.get("amountLabel") || "").trim().slice(0, 30);
 
-  const headers = { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" };
-  const bookingText = `New booking request for Elroi Hub\n\nName: ${name}\nEmail: ${email}\nPackage: ${pkg || "—"}\nRequested slot: ${dateDisplay} at ${timeRaw} WAT (Africa/Lagos)\nNotes: ${notes || "None"}\n\nGoogle Calendar: ${calendarUrl}`;
-
-  const sendTimeout = (ms: number) => {
-    const c = new AbortController();
-    const t = setTimeout(() => c.abort(), ms);
-    return { signal: c.signal, done: () => clearTimeout(t) };
-  };
-
-  const n1 = sendTimeout(8000);
-  let notificationOk = false;
+  // Direct Gmail to Elroihub2502@gmail.com (Option A) — single thread payment+booking together
   try {
-    const notification = await fetch("https://api.resend.com/emails", { method: "POST", headers, body: JSON.stringify({ from, to, reply_to: email, subject: `New onboarding call request — ${name}${pkg ? ` (${pkg})` : ""}`, text: bookingText }), signal: n1.signal });
-    if (!notification.ok) {
-      const body = await notification.text().catch(() => "");
-      console.error("Resend schedule notification failed", notification.status, body.slice(0, 500));
-      return NextResponse.json({ error: "Booking captured, but the notification email could not be sent." }, { status: 502 });
-    }
-    notificationOk = true;
-  } catch (e) {
-    console.error("Resend schedule notification fetch failed", e);
-    return NextResponse.json({ error: "Booking request could not be sent. Please try again." }, { status: 502 });
-  } finally {
-    n1.done();
-  }
-
-  if (!notificationOk) return NextResponse.json({ error: "Booking not sent." }, { status: 502 });
-
-  const n2 = sendTimeout(8000);
-  try {
-    const confirmation = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        from,
-        to: email,
-        subject: "Your Elroi Hub onboarding call request",
-        text: `Hi ${name},\n\nWe received your request for ${dateDisplay} at ${timeRaw} WAT (Africa/Lagos)${pkg ? ` — ${pkg}` : ""}. Elroi Hub will confirm the booking by email.\n\nAdd the provisional time to Google Calendar: ${calendarUrl}\n\nElroi Hub`,
-      }),
-      signal: n2.signal,
+    await sendBookingToElroi({
+      name,
+      email,
+      dateDisplay,
+      dateRaw,
+      time: timeRaw,
+      packageName: pkg || paymentPlan,
+      notes,
+      calendarUrl,
+      paymentMeta: paymentPlan ? { plan: paymentPlan, amountLabel: paymentAmount || undefined, sessionId: paymentSessionId || undefined } : undefined,
     });
-    if (!confirmation.ok) {
-      const body = await confirmation.text().catch(() => "");
-      console.error("Resend schedule confirmation failed", confirmation.status, body.slice(0, 500));
-      return NextResponse.json({ ok: true, calendarUrl, warn: "The internal notification was sent, but the client confirmation email could not be sent." });
+  } catch (err) {
+    console.error("[schedule] Gmail to Elroi failed", err);
+    const msg = err instanceof Error ? err.message : "";
+    if (msg.includes("Gmail OAuth not configured")) {
+      return NextResponse.json({ error: "Email delivery not configured yet. Add GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / GMAIL_REFRESH_TOKEN (see .env.example)." }, { status: 503 });
     }
-    return NextResponse.json({ ok: true, calendarUrl });
-  } catch (e) {
-    console.error("Resend schedule confirmation fetch failed", e);
-    return NextResponse.json({ ok: true, calendarUrl, warn: "The internal notification was sent, but the client confirmation email could not be sent." });
-  } finally {
-    n2.done();
+    return NextResponse.json({ error: "Booking captured, but Gmail delivery failed. Please try again." }, { status: 502 });
   }
+
+  // Optional client confirmation via Gmail (from Elroihub2502 to visitor) — best effort, not blocking
+  try {
+    await sendViaGmail({
+      to: email,
+      subject: "Your ElRoi Hub onboarding call request",
+      text: `Hi ${name},\n\nWe received your request for ${dateDisplay} at ${timeRaw} WAT (Africa/Lagos)${pkg ? ` — ${pkg}` : ""}. ElRoi Hub will confirm the booking by email.\n\nAdd the provisional time to Google Calendar: ${calendarUrl}\n\n— ElRoi Hub (Elroihub2502@gmail.com)`,
+      html: `<div style="font-family:sans-serif;line-height:1.6"><p>Hi ${name},</p><p>We received your request for <strong>${dateDisplay} at ${timeRaw} WAT</strong>${pkg ? ` — ${pkg}` : ""}. ElRoi Hub will confirm the booking by email.</p><p><a href="${calendarUrl}">Add to Google Calendar (Africa/Lagos)</a></p><p>— ElRoi Hub</p></div>`,
+      replyTo: "Elroihub2502@gmail.com",
+    });
+  } catch (e) {
+    console.error("[schedule] Gmail client confirmation failed (non-blocking)", e);
+    return NextResponse.json({ ok: true, calendarUrl, warn: "The internal notification was sent, but the client confirmation email could not be sent." });
+  }
+
+  return NextResponse.json({ ok: true, calendarUrl });
 }

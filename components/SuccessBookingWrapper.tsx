@@ -45,7 +45,7 @@ function displayBookedDate(iso: string) {
 
 const TIME_SLOTS = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"];
 
-export default function SuccessBookingWrapper({ planName, email }: { planName: string; email: string; sessionId?: string }) {
+export default function SuccessBookingWrapper({ planName, email, sessionId, amountLabel }: { planName: string; email: string; sessionId?: string; amountLabel?: string }) {
   const [booked, setBooked] = useState<null | { date: string; time: string; calendarUrl: string; email: string }>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState(TIME_SLOTS[0]);
@@ -82,6 +82,10 @@ export default function SuccessBookingWrapper({ planName, email }: { planName: s
       form.set("time", time);
       form.set("notes", notes.trim());
       form.set("package", selectedPlan);
+      // Single-thread: include payment meta so the Gmail to Elroihub2502@gmail.com contains both
+      if (sessionId) form.set("session_id", sessionId);
+      if (amountLabel) form.set("amount", amountLabel);
+      form.set("plan", selectedPlan);
 
       const res = await fetch("/api/schedule", { method: "POST", body: form });
       const data = await res.json();
