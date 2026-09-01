@@ -283,6 +283,21 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
 .price-btn:hover{background:var(--green);color:#fff}
 .promo{margin:46px 0 0;font-size:26px;line-height:1.4}
 
+/* Checkout — Complete Your Purchase */
+.checkout-page{min-height:auto;padding:168px 7.29% 80px 7.29%;background:linear-gradient(118.49deg,#000 27.873%,#0c200e 74.131%,#246129 215.05%);color:#fff}
+.checkout-success-page{min-height:auto;padding:168px 7.29% 80px 7.29%;background:linear-gradient(118.49deg,#020603 10%,#06120a 35%,#0c200e 65%,#14381a 100%);color:#fff}
+.checkout-layout{display:grid;grid-template-columns:1.05fr 0.95fr;gap:24px;align-items:start}
+.checkout-card{background:#fff;color:var(--ink);border-radius:20px;padding:28px;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.checkout-card-title{margin:0 0 18px;color:#0c200e;font-family:var(--font-fractul);font-size:18px;line-height:1;font-weight:700;letter-spacing:-.02em}
+.checkout-card .field{margin-bottom:14px}
+.checkout-cta{width:100%;height:52px;margin-top:18px;border:0;border-radius:100px;background:#1a5c1a;color:#fff;cursor:pointer;font-family:var(--font-fractul);font-size:15px;font-weight:600;transition:filter .18s ease,transform .18s ease}
+.checkout-cta:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.checkout-cta:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.order-summary{position:sticky;top:24px}
+.order-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;line-height:1.4;color:#333}
+.order-row.total{font-weight:700;color:#0c200e;font-size:14px}
+@media (max-width:900px){.checkout-layout{grid-template-columns:1fr;gap:16px}.order-summary{position:static}}
+
 /* Schedule */
 .schedule-page{min-height:auto;padding:168px 7.87% 120px}
 .schedule-page .inner-head{max-width:1436px}
