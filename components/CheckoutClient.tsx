@@ -27,13 +27,26 @@ export default function CheckoutClient({ plan }: { plan: Plan }) {
   const setupFee = 0;
   const total = subtotal + setupFee;
 
-  const featureList = [
-    "Management of up to 4 platforms",
-    "20–24 custom posts monthly",
-    "8–12 edited reels/videos",
-    "Custom graphics/flyers",
-    "Monthly content calendar",
-  ];
+  // Dynamic service label - matches the selected plan, not a hardcoded value
+  const serviceLabel = (() => {
+    if (plan.category === "web") return plan.description.split(",")[0] || "Web Development";
+    if (plan.category === "graphics") return plan.description.split("+")[0]?.trim() || "Graphics Design";
+    if (plan.category === "ai") return "AI Services";
+    if (plan.category === "combo") return "Combo Package";
+    return plan.category;
+  })();
+
+  // Dynamic features per plan - split description into bullets
+  const featureList = (() => {
+    const desc = plan.description;
+    if (!desc) return ["Custom solution tailored to your needs"];
+    if (desc.includes("\n")) return desc.split("\n").map(s => s.trim()).filter(Boolean);
+    // For comma-separated descriptions, split and clean
+    const parts = desc.split(/[,+]+/).map(s => s.trim()).filter(Boolean);
+    // If only one long part, keep as is but also add generic extras to reach 5
+    if (parts.length === 1 && parts[0].length > 40) return [parts[0]];
+    return parts.slice(0, 5);
+  })();
 
   async function handleContinue() {
     setError("");
@@ -108,7 +121,7 @@ export default function CheckoutClient({ plan }: { plan: Plan }) {
           <div className="checkout-summary-title-wrap">
             <h2 className="checkout-card-title">Order Summary</h2>
             <span className="checkout-summary-plan">{plan.name}</span>
-            <div className="checkout-summary-service">Social Media Management</div>
+            <div className="checkout-summary-service">{serviceLabel}</div>
           </div>
           <div className="checkout-summary-price-wrap">
             <span className="checkout-summary-price">{formatUSD(plan.priceCents)}</span>
