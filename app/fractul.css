@@ -5,7 +5,7 @@
  * the family name is intentionally kept exact here so an available Fractul face is used.
  */
 
-/* Fractul SemiBold — major display/headline styles */
+/* Fractul — uses --font-fractul so Space Grotesk fallback is automatic */
 .section-title,
 .hero h1,
 .ghost,
@@ -16,18 +16,18 @@
 .cta h2,
 .pricing-tabs button,
 .member-name {
-  font-family: "Fractul", "Outfit", sans-serif;
+  font-family: var(--font-fractul);
   font-weight: 600;
 }
 
 /* Fractul Bold — scheduling/form panel headings */
 .panel-title {
-  font-family: "Fractul", "Outfit", sans-serif;
+  font-family: var(--font-fractul);
   font-weight: 700;
 }
 
 /* Fractul Black — pricing values */
 .price {
-  font-family: "Fractul", "Outfit", sans-serif;
+  font-family: var(--font-fractul);
   font-weight: 900;
 }

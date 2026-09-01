@@ -38,6 +38,13 @@ const tabs = [
   ["combo", "COMBO PACKAGES"],
 ] as const;
 
+const tabPositions: Record<string, React.CSSProperties> = {
+  ai: { top: "56px", left: "1%" },
+  graphics: { top: "14px", left: "29%" },
+  web: { top: "74px", left: "46%" },
+  combo: { top: "24px", right: "1%", left: "auto" },
+};
+
 export default function PricingView() {
   const [tab, setTab] = useState<keyof typeof data>("ai");
 
@@ -68,12 +75,13 @@ export default function PricingView() {
             key={key}
             type="button"
             id={`tab-${key}`}
-            className={tab === key ? "active" : ""}
+            className={`tab-${key}${tab === key ? " active" : ""}`}
             role="tab"
             aria-selected={tab === key}
             aria-controls={`panel-${key}`}
             tabIndex={tab === key ? 0 : -1}
             onClick={() => setTab(key)}
+            style={tabPositions[key]}
           >
             {label}
           </button>

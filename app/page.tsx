@@ -7,8 +7,8 @@ import FaqList from "@/components/FaqList";
 // heroBg figma: fd3e254e-d300-40c8-ab6a-e9a061b9de12.png — local: /assets/hero-bg.png
 const heroBg = "/assets/hero-bg.png";
 const cta = "/assets/cta.png"; // figma 85b414a2...
-const whyImageA = "/assets/why-a.png"; // 1ee4af42...
-const whyImageB = "/assets/why-b.png"; // 58b8423b...
+const whyImageLeft = "/assets/why-a.png"; // 1ee4af42... — shared LEFT column (tower + hands + creative)
+const whyImageRight = "/assets/why-b.png"; // 58b8423b... — shared RIGHT column (cube-head)
 const iconBadge = "/assets/icon-badge.svg"; // dd3238bb...
 const iconFilm = "/assets/icon-film.svg"; // 7398d77e...
 const iconMarketing = "/assets/icon-marketing.svg"; // 5defbb61...
@@ -24,10 +24,10 @@ const services = [
 ] as const;
 
 const why = [
-  ["Creative Excellence", "We don't just execute, we craft work that stands out.", whyImageA, "why-creative"],
-  ["Long-Term Trust", "We build influence that compounds, not campaigns that fade.", whyImageB, "why-trust"],
-  ["Performance-Driven Marketing", "Growth isn't a guess. We measure what matters.", whyImageA, "why-performance"],
-  ["Strategic Content", "Every piece of content is built with purpose and performance in mind.", whyImageB, "why-strategic"],
+  ["Creative Excellence", "We don't just execute, we craft work that stands out.", whyImageLeft, "why-creative"],
+  ["Long-Term Trust", "We build influence that compounds, not campaigns that fade.", whyImageRight, "why-trust"],
+  ["Performance-Driven Marketing", "Growth isn't a guess. We measure what matters.", whyImageLeft, "why-performance"],
+  ["Strategic Content", "Every piece of content is built with purpose and performance in mind.", whyImageRight, "why-strategic"],
 ] as const;
 
 const team = [
@@ -114,7 +114,7 @@ export default function Home() {
             <div className="why-grid">
               {why.map(([title, copy, image, cls]) => (
                 <article key={title} className={`why-card ${cls}`}>
-                  <img src={image} alt="" className="why-card-art" />
+                  <div className="why-card-art" style={{ backgroundImage: `url('${image}')` }} aria-hidden="true" />
                   <div className="why-card-copy">
                     <h3>{title}</h3>
                     <p>{copy}</p>
