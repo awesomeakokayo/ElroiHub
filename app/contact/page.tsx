@@ -24,56 +24,58 @@ const contactIcons = {
 
 export default function ContactPage() {
   return (
-    <main className="inner-page contact-page">
-      <SiteHeader />
-      <div className="inner-head">
-        <h1 className="section-title">Let&apos;s Build <span className="gold">Something Great</span></h1>
-        <p className="inner-copy">
-          Whether you have a question, need a quote, or just want to say hi, our team is ready to help you grow your digital presence.
-        </p>
-      </div>
+    <>
+      <main className="inner-page contact-page">
+        <SiteHeader />
+        <div className="inner-head">
+          <h1 className="section-title">Let&apos;s Build <span className="gold">Something Great</span></h1>
+          <p className="inner-copy">
+            Whether you have a question, need a quote, or just want to say hi, our team is ready to help you grow your digital presence.
+          </p>
+        </div>
 
-      <div className="contact-layout">
-        <ContactForm />
+        <div className="contact-layout">
+          <ContactForm />
 
-        <aside className="contact-info">
-          <section className="info-card">
-            <h3>Contact Info</h3>
-            <div className="info-row">
-              <div className="info-icon"><img src={contactIcons.email} alt="" /></div>
-              <div><strong>Elroihub2502@gmail.com</strong><small>We reply within 24 hours</small></div>
-            </div>
-            <div className="info-row">
-              <div className="info-icon"><img src={contactIcons.phone} alt="" /></div>
-              <div><strong>+234 801 234 5678</strong><small>Mon–Fri, 9am–6pm WAT</small></div>
-            </div>
-            <div className="info-row">
-              <div className="info-icon"><img src={contactIcons.location} alt="" /></div>
-              <div><strong>Lagos, Nigeria</strong><small>Remote-first · Global clients</small></div>
-            </div>
-          </section>
+          <aside className="contact-info">
+            <section className="info-card">
+              <h3>Contact Info</h3>
+              <div className="info-row">
+                <div className="info-icon"><img src={contactIcons.email} alt="" /></div>
+                <div><strong>Elroihub2502@gmail.com</strong><small>We reply within 24 hours</small></div>
+              </div>
+              <div className="info-row">
+                <div className="info-icon"><img src={contactIcons.phone} alt="" /></div>
+                <div><strong>+234 801 234 5678</strong><small>Mon–Fri, 9am–6pm WAT</small></div>
+              </div>
+              <div className="info-row">
+                <div className="info-icon"><img src={contactIcons.location} alt="" /></div>
+                <div><strong>Lagos, Nigeria</strong><small>Remote-first · Global clients</small></div>
+              </div>
+            </section>
 
-          <section className="social-card">
-            <h3>Follow Us</h3>
-            {socials.map(([name, handle, url, icon]) => (
-              <a className="social-link" href={url} target="_blank" rel="noreferrer" key={name}>
-                <img className="social-icon" src={icon} alt="" />
-                <span><b>{name}</b><small>{handle}</small></span>
-                <img className="arrow" src={contactIcons.arrow} alt="" />
-              </a>
-            ))}
-          </section>
+            <section className="social-card">
+              <h3>Follow Us</h3>
+              {socials.map(([name, handle, url, icon]) => (
+                <a className="social-link" href={url} target="_blank" rel="noreferrer" key={name}>
+                  <img className="social-icon" src={icon} alt="" />
+                  <span><b>{name}</b><small>{handle}</small></span>
+                  <img className="arrow" src={contactIcons.arrow} alt="" />
+                </a>
+              ))}
+            </section>
 
-          <section className="hours-card">
-            <h3>Working Hours</h3>
-            <div className="hours-row"><span>Monday – Friday</span><strong>9:00 AM – 6:00 PM</strong></div>
-            <div className="hours-row"><span>Saturday</span><strong>10:00 AM – 3:00 PM</strong></div>
-            <div className="hours-row"><span>Sunday</span><strong>Closed</strong></div>
-            <small className="hours-note">All times in West Africa Time (WAT / UTC+1)</small>
-          </section>
-        </aside>
-      </div>
+            <section className="hours-card">
+              <h3>Working Hours</h3>
+              <div className="hours-row"><span>Monday – Friday</span><strong>9:00 AM – 6:00 PM</strong></div>
+              <div className="hours-row"><span>Saturday</span><strong>10:00 AM – 3:00 PM</strong></div>
+              <div className="hours-row"><span>Sunday</span><strong>Closed</strong></div>
+              <small className="hours-note">All times in West Africa Time (WAT / UTC+1)</small>
+            </section>
+          </aside>
+        </div>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
