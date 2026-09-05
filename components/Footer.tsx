@@ -9,7 +9,23 @@ const logoWordmark = "/assets/logo-wordmark.png";
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="ghost" aria-hidden="true">El Roi</div>
+      <div
+        className="ghost"
+        aria-hidden="true"
+        style={{
+          left: "50%",
+          bottom: 0,
+          width: "100%",
+          textAlign: "center",
+          fontSize: "clamp(180px, 31vw, 520px)",
+          lineHeight: 0.8,
+          whiteSpace: "nowrap",
+          transform: "translateX(-50%) scaleX(1.2)",
+          transformOrigin: "center bottom",
+        }}
+      >
+        El Roi
+      </div>
       <div className="footer-grid">
         <div className="footer-brand">
           <div
