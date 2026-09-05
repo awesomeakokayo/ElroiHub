@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
-const logoMark = "/assets/logo-mark.png"; // figma d9ee00d7... — exact same as nav
-const logoWordmark = "/assets/logo-wordmark.png"; // e303a137... — exact same as nav
+const logoMark = "/assets/logo-mark.png";
+const logoWordmark = "/assets/logo-wordmark.png";
 
 export default function Footer() {
   return (
@@ -28,19 +29,13 @@ export default function Footer() {
                 overflow: "hidden",
               }}
             >
-              <img
+              <Image
                 className="footer-logo-mark"
                 src={logoMark}
                 alt=""
-                loading="lazy"
-                decoding="async"
-                onError={(e) => {
-                  const t = e.currentTarget as HTMLImageElement;
-                  if (!t.dataset.fallback) {
-                    t.dataset.fallback = "1";
-                    t.src = "https://www.figma.com/api/mcp/asset/d9ee00d7-ae74-4bd0-80d3-4bcc688e5dc6.png";
-                  }
-                }}
+                fill
+                sizes="40px"
+                quality={70}
                 style={{
                   position: "absolute",
                   left: "-47.71%",
@@ -52,28 +47,27 @@ export default function Footer() {
                 }}
               />
             </span>
-            <img
-              className="footer-logo-wordmark"
-              src={logoWordmark}
-              alt="Elroi Hub"
-              loading="lazy"
-              decoding="async"
-              onError={(e) => {
-                const t = e.currentTarget as HTMLImageElement;
-                if (!t.dataset.fallback) {
-                  t.dataset.fallback = "1";
-                  t.src = "https://www.figma.com/api/mcp/asset/e303a137-4bce-4592-96a5-bf26fab82ef4.png";
-                }
-              }}
+            <span
+              className="footer-logo-wordmark-wrap"
+              aria-hidden="true"
               style={{
                 position: "absolute",
                 left: "31.3578%",
                 top: "2.9079%",
                 width: "68.6422%",
                 height: "96.895%",
-                objectFit: "fill",
               }}
-            />
+            >
+              <Image
+                className="footer-logo-wordmark"
+                src={logoWordmark}
+                alt="Elroi Hub"
+                fill
+                sizes="200px"
+                quality={70}
+                style={{ objectFit: "fill" }}
+              />
+            </span>
           </div>
           <p>Creative Excellence. Strategic Growth. Lasting Influence.</p>
           <p className="footer-copy">Privacy Policy | © 2026 Elroi Hub</p>
