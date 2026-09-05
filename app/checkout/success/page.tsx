@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import { getPlan, formatUSD } from "@/lib/pricing";
@@ -41,32 +40,34 @@ export default async function CheckoutSuccessPage({
   const nextBilling = new Date(Date.now() + 30 * 24 * 3600 * 1000).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
   return (
-    <main className="inner-page checkout-success-page">
-      <SiteHeader />
-      <div className="success-page">
-        <img className="success-payment-mark" src="https://www.figma.com/api/mcp/asset/494cd464-1eaf-4831-aa5f-1ffa3f2673f6.png" alt="" aria-hidden="true" />
+    <>
+      <main className="inner-page checkout-success-page">
+        <SiteHeader />
+        <div className="success-page">
+          <img className="success-payment-mark" src="https://www.figma.com/api/mcp/asset/494cd464-1eaf-4831-aa5f-1ffa3f2673f6.png" alt="" aria-hidden="true" />
 
-        <div className="success-status-pill">Payment Confirmed</div>
+          <div className="success-status-pill">Payment Confirmed</div>
 
-        <h1>Welcome to <span className="gold">El Roi Hub</span></h1>
-        <p className="success-lead">Your Growth Plan is now active. Our team will reach out within 24 hours to get your onboarding started.</p>
+          <h1>Welcome to <span className="gold">El Roi Hub</span></h1>
+          <p className="success-lead">Your Growth Plan is now active. Our team will reach out within 24 hours to get your onboarding started.</p>
 
-        <div className="success-plan-card">
-          <div><div className="success-plan-label">Plan</div><div className="success-plan-value">{planName}</div></div>
-          <div><div className="success-plan-label">Amount</div><div className="success-plan-value">{amountLabel || "$0"}/mo</div></div>
-          <div><div className="success-plan-label">Status</div><div className="success-plan-value active">✓ Active</div></div>
-          <div><div className="success-plan-label">Next Billing</div><div className="success-plan-value">{nextBilling}</div></div>
+          <div className="success-plan-card">
+            <div><div className="success-plan-label">Plan</div><div className="success-plan-value">{planName}</div></div>
+            <div><div className="success-plan-label">Amount</div><div className="success-plan-value">{amountLabel || "$0"}/mo</div></div>
+            <div><div className="success-plan-label">Status</div><div className="success-plan-value active">✓ Active</div></div>
+            <div><div className="success-plan-label">Next Billing</div><div className="success-plan-value">{nextBilling}</div></div>
+          </div>
+
+          {!isPaid && !mock && (
+            <p style={{ textAlign: "center", color: "#ffae00", fontSize: 12, marginTop: 10 }}>Payment verification pending — if you just paid, refresh in a few seconds.</p>
+          )}
+
+          <div className="success-next-divider"><span>What&apos;s Next</span></div>
+
+          <SuccessBookingWrapper planName={planName} email={sessionEmail} sessionId={session_id} amountLabel={amountLabel || (plan ? formatUSD(plan.priceCents) : undefined)} />
         </div>
-
-        {!isPaid && !mock && (
-          <p style={{ textAlign: "center", color: "#ffae00", fontSize: 12, marginTop: 10 }}>Payment verification pending — if you just paid, refresh in a few seconds.</p>
-        )}
-
-        <div className="success-next-divider"><span>What&apos;s Next</span></div>
-
-        <SuccessBookingWrapper planName={planName} email={sessionEmail} sessionId={session_id} amountLabel={amountLabel || (plan ? formatUSD(plan.priceCents) : undefined)} />
-      </div>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
