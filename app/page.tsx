@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import FaqList from "@/components/FaqList";
 
 // Local assets (downloaded from Figma MCP for offline/performant loading). Figma hotlinks kept as fallback comments.
-// heroBg figma: fd3e254e-d300-40c8-ab6a-e9a061b9de12.png — local: /assets/hero-bg.png
 const heroBg = "/assets/hero-bg.png";
 const cta = "/assets/cta.png"; // figma 85b414a2...
 const whyImageLeft = "/assets/why-a.png"; // 1ee4af42... — shared LEFT column (tower + hands + creative)
@@ -66,7 +66,17 @@ export default function Home() {
       <div id="home"><SiteHeader /></div>
       <main id="main-content">
         <section className="hero" aria-label="Hero">
-          <div className="hero-bg" style={{ backgroundImage: `url('${heroBg}')` }} role="img" aria-label="Elroi Hub hero" />
+          <div className="hero-bg">
+            <Image
+              src={heroBg}
+              alt="Elroi Hub hero"
+              fill
+              priority
+              sizes="100vw"
+              quality={75}
+              style={{ objectFit: "cover", objectPosition: "center top" }}
+            />
+          </div>
           <div className="hero-overlay" aria-hidden="true" />
           <div className="hero-content">
             <h1>Built for Brands That Refuse to <span className="gold">Blend</span> In.</h1>
