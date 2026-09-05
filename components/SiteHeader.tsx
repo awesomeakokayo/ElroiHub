@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-// Local assets (downloaded), rendered through Next Image so the browser receives optimized AVIF/WebP variants.
+// Local assets rendered through Next Image so the browser receives optimized AVIF/WebP variants.
 const logoMark = "/assets/logo-mark.png";
 const logoWordmark = "/assets/logo-wordmark.png";
 
@@ -156,7 +156,13 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
               priority
               sizes="88px"
               quality={70}
-              style={{ objectFit: "fill" }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "fill",
+              }}
             />
           </span>
         </Link>
