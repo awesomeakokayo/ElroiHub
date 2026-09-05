@@ -10,12 +10,14 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <main className="inner-page pricing-page">
-      <SiteHeader />
-      <div className="pricing-wrap">
-        <PricingView />
-      </div>
+    <>
+      <main className="inner-page pricing-page">
+        <SiteHeader />
+        <div className="pricing-wrap">
+          <PricingView />
+        </div>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
