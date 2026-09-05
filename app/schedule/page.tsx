@@ -11,21 +11,23 @@ export const metadata: Metadata = {
 
 export default function SchedulePage() {
   return (
-    <main className="inner-page schedule-page">
-      <SiteHeader />
-      <div className="inner-head">
-        <div className="section-kicker" style={{ background: "#affc9e", color: "#246129" }}>
-          Schedule a Call
+    <>
+      <main className="inner-page schedule-page">
+        <SiteHeader />
+        <div className="inner-head">
+          <div className="section-kicker" style={{ background: "#affc9e", color: "#246129" }}>
+            Schedule a Call
+          </div>
+          <h1 className="section-title">Book Your Onboarding Call</h1>
+          <p className="schedule-description">
+            Let&apos;s get acquainted. A 30-minute kickoff call with your dedicated account manager to align on your brand goals, content direction, and first month&apos;s plan.
+          </p>
         </div>
-        <h1 className="section-title">Book Your Onboarding Call</h1>
-        <p className="schedule-description">
-          Let&apos;s get acquainted. A 30-minute kickoff call with your dedicated account manager to align on your brand goals, content direction, and first month&apos;s plan.
-        </p>
-      </div>
-      <Suspense fallback={<div className="form-panel">Loading scheduler…</div>}>
-        <ScheduleForm />
-      </Suspense>
+        <Suspense fallback={<div className="form-panel">Loading scheduler…</div>}>
+          <ScheduleForm />
+        </Suspense>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
