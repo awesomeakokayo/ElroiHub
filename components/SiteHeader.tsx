@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-// Local assets (downloaded), keep Figma hotlinks as fallback via onError
-const logoMark = "/assets/logo-mark.png"; // figma d9ee00d7...
-const logoWordmark = "/assets/logo-wordmark.png"; // e303a137...
+// Local assets (downloaded), rendered through Next Image so the browser receives optimized AVIF/WebP variants.
+const logoMark = "/assets/logo-mark.png";
+const logoWordmark = "/assets/logo-wordmark.png";
 
 const links = [
   ["Home", "/#home"],
@@ -29,7 +30,6 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Sticky: switch from overlay translucent to solid after scrolling past hero (~80px)
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
@@ -37,7 +37,6 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Active section — green highlight + scroll-spy for hash sections
   useEffect(() => {
     const updateActive = () => {
       const path = window.location.pathname;
@@ -69,7 +68,6 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
     };
   }, [pathname]);
 
-  // Body scroll lock + Esc + focus trap
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -94,7 +92,6 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
       }
     };
     document.addEventListener("keydown", onKey);
-    // focus first link
     setTimeout(() => menuRef.current?.querySelector<HTMLAnchorElement>("a")?.focus(), 0);
     return () => {
       document.body.style.overflow = prev;
@@ -102,8 +99,6 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
     };
   }, [open]);
 
-  // On homepage: always keep dark overlay (white logo needs dark bg).
-  // On inner pages: no overlay, light header.
   const effectiveOverlay = overlay && !open;
 
   return (
@@ -123,20 +118,14 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
               overflow: "hidden",
             }}
           >
-            <img
+            <Image
               className="brand-mark"
               src={logoMark}
               alt=""
-              loading="eager"
-              decoding="async"
-              onError={(e) => {
-                // fallback to Figma hotlink if local fails
-                const t = e.currentTarget as HTMLImageElement;
-                if (!t.dataset.fallback) {
-                  t.dataset.fallback = "1";
-                  t.src = "https://www.figma.com/api/mcp/asset/d9ee00d7-ae74-4bd0-80d3-4bcc688e5dc6.png";
-                }
-              }}
+              fill
+              priority
+              sizes="40px"
+              quality={70}
               style={{
                 position: "absolute",
                 left: "-47.71%",
@@ -148,28 +137,28 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
               }}
             />
           </span>
-          <img
-            className="brand-wordmark"
-            src={logoWordmark}
-            alt="Elroi Hub"
-            loading="eager"
-            decoding="async"
-            onError={(e) => {
-              const t = e.currentTarget as HTMLImageElement;
-              if (!t.dataset.fallback) {
-                t.dataset.fallback = "1";
-                t.src = "https://www.figma.com/api/mcp/asset/e303a137-4bce-4592-96a5-bf26fab82ef4.png";
-              }
-            }}
+          <span
+            className="brand-wordmark-wrap"
+            aria-hidden="true"
             style={{
               position: "absolute",
               left: "31.3578%",
               top: "2.9079%",
               width: "68.6422%",
               height: "96.895%",
-              objectFit: "fill",
             }}
-          />
+          >
+            <Image
+              className="brand-wordmark"
+              src={logoWordmark}
+              alt="Elroi Hub"
+              fill
+              priority
+              sizes="88px"
+              quality={70}
+              style={{ objectFit: "fill" }}
+            />
+          </span>
         </Link>
         <nav className="nav" aria-label="Primary navigation" style={{ lineHeight: "normal" }}>
           {links.map(([label, href]) => {
