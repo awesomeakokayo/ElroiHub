@@ -6,6 +6,7 @@ const nextConfig = {
       { protocol: "https", hostname: "figma.com" },
     ],
     formats: ["image/avif", "image/webp"],
+    qualities: [70, 75],
   },
   async headers() {
     return [
