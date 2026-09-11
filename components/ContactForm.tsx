@@ -8,12 +8,13 @@ export default function ContactForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setStatus("sending"); setMessage("");
-    const form = new FormData(event.currentTarget);
+    const formEl = event.currentTarget;
+    const form = new FormData(formEl);
     try {
       const res = await fetch("/api/contact", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
-      setStatus("success"); setMessage("Thanks. Your message has been sent to Elroi Hub."); event.currentTarget.reset();
+      setStatus("success"); setMessage("Thanks. Your message has been sent to Elroi Hub."); formEl.reset();
     } catch (error) { setStatus("error"); setMessage(error instanceof Error ? error.message : "Something went wrong."); }
   }
 
