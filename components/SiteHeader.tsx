@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -118,14 +117,19 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
               overflow: "hidden",
             }}
           >
-            <Image
+            <img
               className="brand-mark"
               src={logoMark}
               alt=""
-              fill
-              priority
-              sizes="40px"
-              quality={70}
+              loading="eager"
+              decoding="async"
+              onError={(e) => {
+                const t = e.currentTarget as HTMLImageElement;
+                if (!t.dataset.fallback) {
+                  t.dataset.fallback = "1";
+                  t.src = "https://www.figma.com/api/mcp/asset/d9ee00d7-ae74-4bd0-80d3-4bcc688e5dc6.png";
+                }
+              }}
               style={{
                 position: "absolute",
                 left: "-47.71%",
@@ -148,14 +152,19 @@ export default function SiteHeader({ overlay = true }: SiteHeaderProps) {
               height: "96.895%",
             }}
           >
-            <Image
+            <img
               className="brand-wordmark"
               src={logoWordmark}
               alt="Elroi Hub"
-              fill
-              priority
-              sizes="88px"
-              quality={70}
+              loading="eager"
+              decoding="async"
+              onError={(e) => {
+                const t = e.currentTarget as HTMLImageElement;
+                if (!t.dataset.fallback) {
+                  t.dataset.fallback = "1";
+                  t.src = "https://www.figma.com/api/mcp/asset/e303a137-4bce-4592-96a5-bf26fab82ef4.png";
+                }
+              }}
               style={{
                 position: "absolute",
                 inset: 0,

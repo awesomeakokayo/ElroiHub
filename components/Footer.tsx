@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 const logoMark = "/assets/logo-mark.png";
@@ -45,13 +44,19 @@ export default function Footer() {
                 overflow: "hidden",
               }}
             >
-              <Image
+              <img
                 className="footer-logo-mark"
                 src={logoMark}
                 alt=""
-                fill
-                sizes="40px"
-                quality={70}
+                loading="lazy"
+                decoding="async"
+                onError={(e) => {
+                  const t = e.currentTarget as HTMLImageElement;
+                  if (!t.dataset.fallback) {
+                    t.dataset.fallback = "1";
+                    t.src = "https://www.figma.com/api/mcp/asset/d9ee00d7-ae74-4bd0-80d3-4bcc688e5dc6.png";
+                  }
+                }}
                 style={{
                   position: "absolute",
                   left: "-47.71%",
@@ -74,14 +79,20 @@ export default function Footer() {
                 height: "96.895%",
               }}
             >
-              <Image
+              <img
                 className="footer-logo-wordmark"
                 src={logoWordmark}
                 alt="Elroi Hub"
-                fill
-                sizes="200px"
-                quality={70}
-                style={{ objectFit: "fill" }}
+                loading="lazy"
+                decoding="async"
+                onError={(e) => {
+                  const t = e.currentTarget as HTMLImageElement;
+                  if (!t.dataset.fallback) {
+                    t.dataset.fallback = "1";
+                    t.src = "https://www.figma.com/api/mcp/asset/e303a137-4bce-4592-96a5-bf26fab82ef4.png";
+                  }
+                }}
+                style={{ objectFit: "fill", position: "absolute", inset: 0, width: "100%", height: "100%" }}
               />
             </span>
           </div>
