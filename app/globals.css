@@ -148,9 +148,9 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
 .why-creative .why-card-copy h3{font-size:clamp(22px,2.1vw,28px);margin-top:-6px}
 .why-creative .why-card-copy p{max-width:340px;font-size:15px;line-height:1.5;margin-top:6px}
 
-/* Right column — cube-head — ONE tall photo sliced across 2 cards. Slightly shrunk for inset so corner never clips */
+/* Right column — cube-head — ONE tall photo sliced across 2 cards. Same width rule as left, mirrored right */
 .why-trust{flex:0 0 calc(43% - 8px);color:var(--ink);background:var(--gold);flex-direction:row}
-.why-trust .why-card-art{flex-basis:42%;max-width:42%;order:2;background-size:92% 184%;background-position:50% 0%}
+.why-trust .why-card-art{flex-basis:42%;max-width:42%;order:2;background-size:100% 200%;background-position:50% 0%}
 .why-trust .why-card-copy{flex:1;max-width:58%;order:1;margin-right:0;justify-content:center;padding:40px 24px 40px 32px}
 .why-trust .why-card-copy h3{font-size:clamp(20px,1.9vw,26px)}
 .why-trust .why-card-copy p{max-width:300px;font-size:15px;line-height:1.5}
@@ -164,7 +164,7 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
 
 /* Right column bottom — SAME cube image, bottom slice. Tail bleed at top edge is intentional continuation */
 .why-strategic{flex:0 0 calc(45% - 8px);color:#fff;background:var(--green);flex-direction:row}
-.why-strategic .why-card-art{flex-basis:42%;max-width:42%;order:2;background-size:92% 184%;background-position:50% 100%}
+.why-strategic .why-card-art{flex-basis:42%;max-width:42%;order:2;background-size:100% 200%;background-position:50% 100%}
 .why-strategic .why-card-copy{flex:1;max-width:58%;order:1;margin-right:0;justify-content:center;padding:40px 24px 40px 32px}
 .why-strategic .why-card-copy h3{font-size:clamp(20px,1.9vw,26px)}
 .why-strategic .why-card-copy p{max-width:340px;font-size:15px;line-height:1.5}
