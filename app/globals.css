@@ -116,8 +116,8 @@ a:focus-visible,button:focus-visible,[role="tab"]:focus-visible,input:focus-visi
 /* ===== Services ===== */
 .services{min-height:1118px;padding:81px 7.4% 75px 9%;position:relative;overflow:hidden;background:linear-gradient(124.674deg,#000 27.873%,#0c200e 74.131%,#246129 215.05%);color:#fff}
 .services .ghost{left:-201px;top:-264px}
-.services .content{width:min(1444px,92%);max-width:1444px}
-.service-grid{margin-top:51px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 44px}
+.services .content{width:min(1444px,92%);max-width:1444px;margin:0 auto}
+.service-grid{margin-top:51px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 44px;justify-items:center;max-width:1444px}
 .service-card{padding:47px 42px;border-radius:30px;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease}
 .service-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.18)}
 .gold-card{background:var(--gold);color:var(--ink)}
