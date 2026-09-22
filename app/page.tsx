@@ -51,6 +51,11 @@ const team = [
     "/assets/team-ai.png", // 24aec887...
     "“The future of AI will not belong to those who merely have access to powerful tools, but to those who understand how to think with them, direct them, and turn intelligence into execution. PromptForge AI is where that transformation begins.”",
   ],
+  [
+    "Head of Client Success - David Iboroma",
+    "/assets/team-client-success.png",
+    "“In this age, growth doesn’t happen overnight, it is a product of visibility, detailed planning and consistency. Every business needs to grow its social media and build relevant relationships with its customers.”",
+  ],
 ] as const;
 
 const processSteps = [
